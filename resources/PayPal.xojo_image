@@ -1,0 +1,43 @@
+#tag MultiImage
+Image PayPal
+	#tag ImageRepresentation
+		SaveInfo = APHRcwECAQAAAAGGAAAAAAGGAAIAAAtDYWRtaXVtIFNTRAAAAAAAAAAAAAAAAAAAAAAAAAAAQkQAAf////8NUGF5UGFsXzF4LnBuZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAAAP////8AAAogY3UAAAAAAAAAAAAAAAAACXJlc291cmNlcwAAAgBILzpVc2VyczpqdWVyZzpEb2N1bWVudHM6R2l0SHViOmpvLXRvb2xzOnhvam8yZG1nOnJlc291cmNlczpQYXlQYWxfMXgucG5nAA4AHAANAFAAYQB5AFAAYQBsAF8AMQB4AC4AcABuAGcADwAYAAsAQwBhAGQAbQBpAHUAbQAgAFMAUwBEABIARlVzZXJzL2p1ZXJnL0RvY3VtZW50cy9HaXRIdWIvam8tdG9vbHMveG9qbzJkbWcvcmVzb3VyY2VzL1BheVBhbF8xeC5wbmcAEwABLwAAFQACAAz//wAAAAAAAAAA
+		FullPath = /Users/juerg/Documents/GitHub/jo-tools/xojo2dmg/resources/PayPal_1x.png
+		PartialPath = resources\PayPal_1x.png
+		#tag ImageSpecification
+			Comment = 
+			Device = 31
+			HSize = 100.00
+			Orientation = Any
+			Platform = 15
+			PPI = 72
+			VSize = 26.00
+		#tag EndImageSpecification
+	#tag EndImageRepresentation
+	#tag ImageRepresentation
+		SaveInfo = APHRcwECAQAAAAGGAAAAAAGGAAIAAAtDYWRtaXVtIFNTRAAAAAAAAAAAAAAAAAAAAAAAAAAAQkQAAf////8NUGF5UGFsXzJ4LnBuZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAAAP////8AAAogY3UAAAAAAAAAAAAAAAAACXJlc291cmNlcwAAAgBILzpVc2VyczpqdWVyZzpEb2N1bWVudHM6R2l0SHViOmpvLXRvb2xzOnhvam8yZG1nOnJlc291cmNlczpQYXlQYWxfMngucG5nAA4AHAANAFAAYQB5AFAAYQBsAF8AMgB4AC4AcABuAGcADwAYAAsAQwBhAGQAbQBpAHUAbQAgAFMAUwBEABIARlVzZXJzL2p1ZXJnL0RvY3VtZW50cy9HaXRIdWIvam8tdG9vbHMveG9qbzJkbWcvcmVzb3VyY2VzL1BheVBhbF8yeC5wbmcAEwABLwAAFQACAAz//wAAAAAAAAAA
+		FullPath = /Users/juerg/Documents/GitHub/jo-tools/xojo2dmg/resources/PayPal_2x.png
+		PartialPath = resources\PayPal_2x.png
+		#tag ImageSpecification
+			Comment = 
+			Device = 31
+			HSize = 100.00
+			Orientation = Any
+			Platform = 15
+			PPI = 144
+			VSize = 26.00
+		#tag EndImageSpecification
+	#tag EndImageRepresentation
+	#tag ImageRepresentation
+		#tag ImageSpecification
+			Comment = 
+			Device = 31
+			HSize = 100.00
+			Orientation = Any
+			Platform = 15
+			PPI = 216
+			VSize = 26.00
+		#tag EndImageSpecification
+	#tag EndImageRepresentation
+End Image
+#tag EndMultiImage
