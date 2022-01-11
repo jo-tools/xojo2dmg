@@ -20,7 +20,7 @@ You can easily customize the DiskImage's appearance by setting a couple of Varia
 5. Notarization: Xcode 11, macOS 10.13.6
 
 ### ScreenShots
-This DMG has been created with Xojo2DMG *(built with macOS 10.15.1, Xcode 11.2.1 for CodeSigning/Notarization)*.
+[This DMG](example-build/Xojo2DMG_Beta.dmg) has been created with Xojo2DMG *(built with macOS 10.15.1, Xcode 11.2.1 for CodeSigning/Notarization)*.
 ![ScreenShot: Disk Image](screenshots/xojo2dmg_screenshot_1.png?raw=true)
 
 Xojo IDE with the Post Build Script:  
