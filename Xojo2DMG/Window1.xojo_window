@@ -169,7 +169,7 @@ Begin Window Window1
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "This is just a dummy App.\n\nBuild the Xojo project with on macOS. The Post Build Script will invoke a Shell Script in order to auto-magically create a DiskImage .dmg.\n\nIf you edit the Post Build Script and add your CodeSigning information, it will sign (Xcode required) both your .app and .dmg (OS X 10.11.5 or later is required) as well. To additionally set up Notarization (macOS 10.13.6 or later is required), see comments in PosBuildScript."
+      Text            =   "This is just a dummy App.\n\nBuild the Xojo project on macOS. The Post Build Script will invoke a Shell Script in order to auto-magically create a DiskImage .dmg.\n\nIf you edit the Post Build Script and add your CodeSigning information, it will sign (Xcode required) both your .app and .dmg (OS X 10.11.5 or later is required) as well. To additionally set up Notarization (macOS 10.13.6 or later is required), see comments in PostBuildScript."
       TextAlign       =   0
       TextColor       =   &c00000000
       TextFont        =   "System"
