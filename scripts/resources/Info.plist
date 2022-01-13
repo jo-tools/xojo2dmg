@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>This example application launches Terminal and executes a simple Script in Terminal.</string>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>This example should not use this folder. Feel free to deny this permission request.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>This example should not use this folder. Feel free to deny this permission request.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>This example should not use this folder. Feel free to deny this permission request.</string>
+	<key>NSNetworkVolumesUsageDescription</key>
+	<string>This example should not use this folder. Feel free to deny this permission request.</string>
+	<key>NSRemovableVolumesUsageDescription</key>
+	<string>This example should not use this folder. Feel free to deny this permission request.</string>
+</dict>
+</plist>
