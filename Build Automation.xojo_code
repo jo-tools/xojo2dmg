@@ -105,11 +105,11 @@
 					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + "/scripts/resources/backgroundImage_2x.png" 'Retina
 					end select
 					Dim sDMG_ALIAS_CAPTION As String = "copy 2 Applications" 'how to label the Alias to the Applications folder
-					Dim sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 585" 'position the window, change according to your BackgroundPicture
+					Dim sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 575" 'position the window, change according to your BackgroundPicture
 					Dim sDMG_ICON_SIZE As String = "128"
 					Dim sDMG_TEXT_SIZE As String = "16"
-					Dim sDMG_ICON_POSITION_APP As String = "160, 340" 'where to position the Icon of your App
-					Dim sDMG_ICON_POSITION_ALIAS As String = "500, 340"'where to position the Icon of the Alias to Applications
+					Dim sDMG_ICON_POSITION_APP As String = "160, 320" 'where to position the Icon of your App
+					Dim sDMG_ICON_POSITION_ALIAS As String = "500, 320"'where to position the Icon of the Alias to Applications
 					Dim sDMG_FILE_ICON As String = sPROJECT_PATH + "/scripts/resources/volumeicon.icns"
 					
 					'*************************
