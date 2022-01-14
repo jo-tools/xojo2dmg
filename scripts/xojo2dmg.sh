@@ -54,11 +54,10 @@ DMG_ICON_POSITION_APP=${15}
 DMG_ICON_POSITION_ALIAS=${16}
 DMG_FILE_ICON=${17}
 
-BUILD_TARGET_BITS=${18}
-CODESIGN_IDENT=${19}
-CODESIGN_ENTITLEMENTS=${20}
+CODESIGN_IDENT=${18}
+CODESIGN_ENTITLEMENTS=${19}
 
-NOTARIZATION_ENABLED=${21}
+NOTARIZATION_ENABLED=${20}
 KEYCHAIN_APP_NOTARIZATION=Xojo2DMGAppNotarization
 
 
@@ -211,6 +210,7 @@ APP_FROM="${BUILD_LOCATION}/${APP_FROM_FILENAME}"
 APP_NAME="$BUILD_APPNAME"
 APP_FROM_FILENAME="${BUILD_APPNAME}.app"
 APP_ZIP_FILENAME="${BUILD_APPNAME}.zip"
+APP_FROM_MACOS_EXECUTABLE="${APP_FROM}/Contents/MacOS/${BUILD_APPNAME}"
 
 DMG_TMP="${BUILD_LOCATION}/${DMG_VOLUME_FILENAME}-temp.dmg"
 DMG_FINAL="${BUILD_LOCATION}/${DMG_VOLUME_FILENAME}.dmg"
@@ -275,6 +275,22 @@ if [ ! -d "${APP_FROM}" ]; then
 	exit 8
 fi
 
+echo "Xojo2DMG: looking for the built .app's macOS executable'"
+if [ ! -f "${APP_FROM_MACOS_EXECUTABLE}" ]; then
+	echo "Xojo2DMG ERROR: \${APP_FROM_MACOS_EXECUTABLE} = ${APP_FROM_MACOS_EXECUTABLE} doesn't exist."
+	exit 8
+fi
+
+# get the app archs
+APP_ARCHS=`lipo -archs "${APP_FROM_MACOS_EXECUTABLE}"`
+echo "Xojo2DMG: the built .app's macOS executable' archs are: ${APP_ARCHS}"
+
+if [ -z "$APP_ARCHS" ]; then
+	echo "Xojo2DMG ERROR: \$APP_ARCHS is empty."
+	exit 8
+fi
+
+
 # clear out any old data
 echo ""
 echo "Xojo2DMG: clear out any old data"
@@ -285,19 +301,29 @@ sync
 # Cleanup and CodeSign
 # ********************
 
-# strip out i386 code in Frameworks
-STRIP_I386_FRAMEWORKS=0
-if [ "${BUILD_TARGET_BITS}" = "64Bit" ]; then
-	#only in 64Bit Builds
-	STRIP_I386_FRAMEWORKS=1
+# strip out unnecessary archs (i386 | x86_64 | arm64) in Frameworks
+STRIP_I386_FRAMEWORKS=1
+STRIP_X86_64_FRAMEWORKS=1
+STRIP_ARM64_FRAMEWORKS=1
+if [[ "${APP_ARCHS}" =~ "i386" ]]; then
+	STRIP_I386_FRAMEWORKS=0
 fi
+if [[ "${APP_ARCHS}" =~ "x86_64" ]]; then
+	STRIP_X86_64_FRAMEWORKS=0
+fi
+if [[ "${APP_ARCHS}" =~ "arm64" ]]; then
+	STRIP_ARM64_FRAMEWORKS=0
+fi
+
 if [ -z "${CODESIGN_IDENT}" ]; then
 	#without CodeSigning we also don't strip Frameworks
 	STRIP_I386_FRAMEWORKS=0
+	STRIP_X86_64_FRAMEWORKS=0
+	STRIP_ARM64_FRAMEWORKS=0
 fi
 
-if [ $STRIP_I386_FRAMEWORKS -eq 1 ]; then
-	echo "Xojo2DMG: Find and Cleanup Frameworks (strip out i386)"
+if [ $STRIP_I386_FRAMEWORKS -eq 1 ] || [ $STRIP_X86_64_FRAMEWORKS -eq 1 ] || [ $STRIP_ARM64_FRAMEWORKS -eq 1 ]; then
+	echo "Xojo2DMG: Find and Cleanup Frameworks according to build archs: ${APP_ARCHS}"
 	sleep 1
 
 	IFS=$'\n' frameworkFolderArray=( $(find "${APP_FROM}/Contents/Frameworks" -type d -name "*.framework") )
@@ -311,10 +337,23 @@ if [ $STRIP_I386_FRAMEWORKS -eq 1 ]; then
 
 		if [ -d "${currentframeworkFolder}" ]; then
 			if [ -d "${currentframeworkFolder}/Versions/A" ]; then
-				echo "Xojo2DMG: Cleanup Framework: ${currentFrameworkName}"
+				echo "Xojo2DMG: Checking Framework: ${currentFrameworkName}"
 				cd "${currentframeworkFolder}/Versions/A"
-				#remove i386 parts
-				lipo -archs "./${currentFrameworkName}" | grep "i386" && lipo "./${currentFrameworkName}" -remove i386 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
+				if [ $STRIP_I386_FRAMEWORKS -eq 1 ]; then
+					lipo -archs "./${currentFrameworkName}" | grep "i386" && lipo "./${currentFrameworkName}" -remove i386 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
+					sync
+					sleep 1
+				fi
+				if [ $STRIP_X86_64_FRAMEWORKS -eq 1 ]; then
+					lipo -archs "./${currentFrameworkName}" | grep "x86_64" && lipo "./${currentFrameworkName}" -remove x86_64 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
+					sync
+					sleep 1
+				fi
+				if [ $STRIP_ARM64_FRAMEWORKS -eq 1 ]; then
+					lipo -archs "./${currentFrameworkName}" | grep "arm64" && lipo "./${currentFrameworkName}" -remove arm64 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
+					sync
+					sleep 1
+				fi
 			fi
 		fi
 	done
