@@ -34,18 +34,18 @@
 					
 					'The following Variables are just for convenience:
 					Dim sApp_Version As String = PropertyValue("App.ShortVersion")
-					if (sApp_Version = "") then
+					If (sApp_Version = "") Then
 					sApp_Version = PropertyValue("App.MajorVersion") + "." + PropertyValue("App.MinorVersion") + "." + PropertyValue("App.BugVersion")
-					end if
+					End If
 					Dim sApp_StageCode As String = ""
-					select case PropertyValue("App.StageCode")
-					case "0"
+					Select Case PropertyValue("App.StageCode")
+					Case "0"
 					sApp_StageCode = "Dev"
-					case "1"
+					Case "1"
 					sApp_StageCode = "Alpha"
-					case "2"
+					Case "2"
 					sApp_StageCode = "Beta"
-					end select
+					End Select
 					
 					'if you want to see what's going on in Terminal.app, then set bOpenInTerminal to true
 					'this might be a more helpful output when something goes wrong
@@ -53,7 +53,7 @@
 					'not be responding in the post build step (it will show a Spinning Wheel during
 					'execution of a synchronous ShellScript, opening in Terminal will do this
 					'synchronously)
-					Dim bOpenInTerminal As Boolean = true
+					Dim bOpenInTerminal As Boolean = True
 					
 					
 					'*********************************************************
@@ -62,30 +62,30 @@
 					'a good idea, since the application's behavior with HardenedRuntime
 					'will be different...
 					'Note: You will need to add your DeveloperID below to activate CodeSigning
-					Dim bDebugBuild_DoCodeSign As Boolean = true
+					Dim bDebugBuild_DoCodeSign As Boolean = True
 					
-					if bDebugBuild_DoCodeSign and DebugBuild then
+					If bDebugBuild_DoCodeSign And DebugBuild Then
 					'just Codesigning (without DMG Creation and Notarization) is
 					'fine in a 'hidden way', since it doesn't take too long
-					bOpenInTerminal = false
+					bOpenInTerminal = False
 					'this will be enforced below... you don't want the IDE to be launching
 					'the app while it is still being codesigned (asynchronous in Terminal)
-					end if
+					End If
 					
 					'*******************************
 					'required: Xojo Project Settings
 					'*******************************
 					Dim sPROJECT_PATH As String = Trim(DoShellCommand("echo $PROJECT_PATH", 0))
-					if Right(sPROJECT_PATH, 1) = "/" then
+					If Right(sPROJECT_PATH, 1) = "/" Then
 					'no trailing /
 					sPROJECT_PATH = Mid(sPROJECT_PATH, 1, Len(sPROJECT_PATH)-1)
-					end if
+					End If
 					Dim sBUILD_LOCATION As String = ReplaceAll(CurrentBuildLocation, "\", "") 'don't escape Path
 					Dim sBUILD_APPNAME As String = CurrentBuildAppName
 					Dim sBUILD_TYPE As String = "release"
-					if DebugBuild then sBUILD_TYPE = "debug"
+					If DebugBuild Then sBUILD_TYPE = "debug"
 					Dim sDEBUGBUILD_CODESIGN As String = "no"
-					if bDebugBuild_DoCodeSign then sDEBUGBUILD_CODESIGN = "yes"
+					If bDebugBuild_DoCodeSign Then sDEBUGBUILD_CODESIGN = "yes"
 					
 					'************************************
 					'required: DMG settings/customization
@@ -96,14 +96,14 @@
 					'Please note: the Images have to be 72DPI!
 					Dim sDMG_BACKGROUND_IMG_1x As String = sPROJECT_PATH + "/scripts/resources/backgroundImage_1x.png" 'Non-Retina
 					Dim sDMG_BACKGROUND_IMG_2x As String = sPROJECT_PATH + "/scripts/resources/backgroundImage_2x.png" 'Retina
-					select case PropertyValue("App.StageCode")
-					case "3" 'Final
+					Select Case PropertyValue("App.StageCode")
+					Case "3" 'Final
 					'use the BackgroundImage set just above
-					else
+					Else
 					'not a final build - you might want to use a different BackgroundImage that has a 'PreRelease label'
 					'sDMG_BACKGROUND_IMG_1x = sPROJECT_PATH + "/scripts/resources/backgroundImage_1x.png" 'Non-Retina
 					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + "/scripts/resources/backgroundImage_2x.png" 'Retina
-					end select
+					End Select
 					Dim sDMG_ALIAS_CAPTION As String = "copy 2 Applications" 'how to label the Alias to the Applications folder
 					Dim sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 575" 'position the window, change according to your BackgroundPicture
 					Dim sDMG_ICON_SIZE As String = "128"
@@ -225,16 +225,16 @@
 					'Note: macOS 10.14.5 and later will fail to validate a non-notarized .dmg
 					'      that expected error will be ignored. It's highly recommended to
 					'      notarize every build.
-					select case PropertyValue("App.StageCode")
-					case "0" 'Development
+					Select Case PropertyValue("App.StageCode")
+					Case "0" 'Development
 					sNOTARIZE = "no"
-					case "1" 'Alpha
+					Case "1" 'Alpha
 					sNOTARIZE = "no"
-					case "2" 'Beta
+					Case "2" 'Beta
 					sNOTARIZE = "yes"
-					case "3" 'Final
+					Case "3" 'Final
 					sNOTARIZE = "yes"
-					end select
+					End Select
 					
 					
 					'*******************************************
@@ -243,51 +243,51 @@
 					'you shouldn't need to modify anything below
 					'(but feel free to do so :-)
 					'*******************************************
-					if (not TargetMacOS) then
+					If (Not TargetMacOS) Then
 					Print "Xojo2DMG can only be run on macOS. You can't CodeSign and Notarize for macOS on other Platforms."
-					return
-					end if
+					Return
+					End If
 					
 					'Check: Unsupported XojoVersion when building Universal (Intel 64Bit, ARM 64Bit)
-					if ((CurrentBuildTarget = 24) and (Right(sBUILD_LOCATION, 18) = "/_macOS ARM 64 bit")) _
-					or _
-					((CurrentBuildTarget = 16) and (Right(sBUILD_LOCATION, 14) = "/_macOS 64 bit")) then
+					If ((CurrentBuildTarget = 24) And (Right(sBUILD_LOCATION, 18) = "/_macOS ARM 64 bit")) _
+					Or _
+					((CurrentBuildTarget = 16) And (Right(sBUILD_LOCATION, 14) = "/_macOS 64 bit")) Then
 					Print "Xojo2DMG doesn't support building Universal (Intel 64Bit, ARM 64Bit) with Xojo " + Format(XojoVersion, "0000.00#") + _
 					EndOfLine + EndOfLine + _
 					"The reason is that the PostBuild Scripts get triggered multiple times, with no indication when the Universal Build has finished."
-					return
-					end if
+					Return
+					End If
 					
-					if (sCODESIGN_IDENT = "") then
-					if (sBUILD_TYPE = "release") then
+					If (sCODESIGN_IDENT = "") Then
+					If (sBUILD_TYPE = "release") Then
 					Print "Xojo2DMG: Add the required Variable 'sCODESIGN_IDENT' in the Post Build Step - Xojo2DMGScript in order to enable CodeSigning." + EndOfLine + EndOfLine + "The Script now continues to create a .dmg without CodeSigning (and without Notarization)."
-					elseif (sDEBUGBUILD_CODESIGN = "yes") then
+					Elseif (sDEBUGBUILD_CODESIGN = "yes") Then
 					Print "Xojo2DMG: Add the required Variable 'sCODESIGN_IDENT' in the Post Build Step - Xojo2DMGScript in order to enable CodeSigning." + EndOfLine + EndOfLine + "The Script now continues the DebugRun without CodeSigning."
-					end if
-					end if
+					End If
+					End If
 					
 					'Check Xojo's Build Target
-					select case CurrentBuildTarget
-					case 7
+					Select Case CurrentBuildTarget
+					Case 7
 					'macOS: Intel 32Bit
-					if (not DebugBuild) then
+					If (Not DebugBuild) Then
 					Print "Xojo2DMG: Putting a 32Bit application into a DMG is fine." + EndOfLine + EndOfLine + "If you intend to CodeSign and Notarize, you should build an Intel 64Bit or Universal (Intel 64Bit, ARM 64Bit) application."
-					end if
-					case 16
+					End If
+					Case 16
 					'macOS: Intel 64Bit
-					case 24
+					Case 24
 					'macOS: ARM 64Bit
-					case 9
+					Case 9
 					'macOS: Universal (Intel 64Bit, ARM 64Bit)
-					else
+					Else
 					Print "Supported macOS Build Targets for Xojo2DMG are: Intel (32Bit / 64Bit), ARM (64Bit) and Universal (Intel 64Bit, ARM 64Bit)." + EndOfLine + EndOfLine + "CurrentBuildTarget: " + Str(CurrentBuildTarget)
-					return
-					end select
+					Return
+					End Select
 					
-					if (sPROJECT_PATH = "") then
+					If (sPROJECT_PATH = "") Then
 					Print "Xojo2DMG requires to get the Environment Variable $PROJECT_PATH from the Xojo IDE." + EndOfLine + EndOfLine + "Unfortunately, it's empty.... try again after re-launching the Xojo IDE and/or rebooting your machine."
-					return
-					end if
+					Return
+					End If
 					
 					'The Contents of Array will later be passed to
 					'the ShellScript 'xojo2dmg.sh', which does all the processing
@@ -323,15 +323,15 @@
 					sShellArguments.Append(sNOTARIZE)
 					
 					'Make sure the ShellScript is executable:
-					call DoShellCommand("chmod 755 """ + sPROJECT_PATH + "/scripts/xojo2dmg.sh""", 0)
+					Call DoShellCommand("chmod 755 """ + sPROJECT_PATH + "/scripts/xojo2dmg.sh""", 0)
 					
-					if (not DebugBuild) and bOpenInTerminal then
+					If (Not DebugBuild) And bOpenInTerminal Then
 					'Automate Terminal:
 					'Pass ShellArguments to Script and execute it in Terminal.app
-					call DoShellCommand("osascript -e 'tell application ""Terminal"" to activate'", 0)
-					call DoShellCommand("osascript -e 'tell application ""Terminal"" to do script ""\""" + sPROJECT_PATH + "/scripts/xojo2dmg.sh\"" \""" + Join(sShellArguments, "\"" \""") + "\""""'", 0)
-					return 'see progress and errors in Terminal.app
-					end if
+					Call DoShellCommand("osascript -e 'tell application ""Terminal"" to activate'", 0)
+					Call DoShellCommand("osascript -e 'tell application ""Terminal"" to do script ""\""" + sPROJECT_PATH + "/scripts/xojo2dmg.sh\"" \""" + Join(sShellArguments, "\"" \""") + "\""""'", 0)
+					Return 'see progress and errors in Terminal.app
+					End If
 					
 					'Let's call the ShellScript (and Pass ShellArguments to the Script)
 					'This will be executed synchronously - the IDE will be 'busy'
@@ -344,45 +344,45 @@
 					Dim sXojo2CodeSignErrors() As String
 					Dim sShellResultLines() As String
 					sShellResultLines = Split(ReplaceAll(sShellResult, EndOfLine, "*****"), "*****")
-					for i As Integer = 0 to UBound(sShellResultLines)
+					For i As Integer = 0 To UBound(sShellResultLines)
 					'get all lines with Xojo2DMG Errors (and not the full output)
-					if (Left(sShellResultLines(i), 15) = "Xojo2DMG ERROR:") then
+					If (Left(sShellResultLines(i), 15) = "Xojo2DMG ERROR:") Then
 					sXojo2CodeSignErrors.Append(sShellResultLines(i))
-					end if
-					next
+					End If
+					Next
 					
-					select case iShellResult
-					case 2
+					Select Case iShellResult
+					Case 2
 					'DebugRun without Codesigning: xojo2dmg.sh will return with 'exit 2'
 					'don't put Result in Clipboard, don't show errors - it's all OK
-					return
-					case 8
+					Return
+					Case 8
 					'xojo2dmg.sh will 'exit 8' if variables aren't ok
 					sXojo2CodeSignErrors.Append("Xojo2DMG: Check your input variables.")
-					case 9
+					Case 9
 					'xojo2dmg.sh will 'exit 9' if required variables are missing
 					sXojo2CodeSignErrors.Append("Xojo2DMG: Missing some input variables.")
-					case 11
+					Case 11
 					'xojo2dmg.sh will 'exit 9' if CodeSigning (and it's validation) has failed
 					sXojo2CodeSignErrors.Append("Xojo2DMG: There's something wrong with CodeSign.")
-					case 12
+					Case 12
 					'xojo2dmg.sh will 'exit 9' if Notarization (and it's validation) has failed
 					sXojo2CodeSignErrors.Append("Xojo2DMG: There's something wrong with Notarization.")
-					case 0
+					Case 0
 					'Yeah... it's all OK!
-					else
+					Else
 					'Hmm... something went wrong...
 					sXojo2CodeSignErrors.Append("xojo2dmg.sh quit with ShellResult: " + Str(iShellResult))
-					end select
+					End Select
 					
 					'If there are errors:
-					if (UBound(sXojo2CodeSignErrors) >= 0) then
+					If (UBound(sXojo2CodeSignErrors) >= 0) Then
 					'print just the Errors, and have the full output in Clipboard
 					Print Join(sXojo2CodeSignErrors, EndOfLine) + EndOfLine + "Note: Shell Output is in Clipboard"
 					Clipboard = sShellResult
-					end if
+					End If
 					
-					return
+					Return
 					
 				End
 			End

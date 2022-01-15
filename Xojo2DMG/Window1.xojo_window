@@ -23,7 +23,7 @@ Begin Window Window1
    MinWidth        =   600
    Placement       =   0
    Resizeable      =   True
-   Title           =   "Xojo 2 DMG"
+   Title           =   "Xojo2DMG"
    Visible         =   True
    Width           =   600
    Begin Canvas cnvAppIcon
@@ -44,7 +44,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
@@ -72,12 +72,12 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Xojo 2 DMG"
+      Text            =   "Xojo2DMG"
       TextAlign       =   1
       TextColor       =   &c0072D800
       TextFont        =   "System"
@@ -107,7 +107,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   2
       TabPanelIndex   =   0
@@ -137,7 +137,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -164,7 +164,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   True
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   4
       TabPanelIndex   =   0
@@ -194,7 +194,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
@@ -221,7 +221,7 @@ Begin Window Window1
       LockRight       =   False
       LockTop         =   False
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   7
       TabPanelIndex   =   0
@@ -265,7 +265,7 @@ Begin Window Window1
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
@@ -300,7 +300,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
@@ -331,7 +331,7 @@ Begin Window Window1
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   6
       TabPanelIndex   =   0
@@ -366,7 +366,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   True
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   10
       TabPanelIndex   =   0
@@ -401,7 +401,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   11
       TabPanelIndex   =   0
@@ -437,7 +437,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
@@ -469,7 +469,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
@@ -500,7 +500,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   True
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   14
       TabPanelIndex   =   0
@@ -535,7 +535,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   15
       TabPanelIndex   =   0
@@ -570,7 +570,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
@@ -598,7 +598,7 @@ Begin Window Window1
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
-      Scope           =   0
+      Scope           =   2
       Selectable      =   False
       TabIndex        =   17
       TabPanelIndex   =   0
@@ -629,69 +629,69 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  if (x >= 0) and (x < me.Width) and (y > 0) and (y < me.Height) then
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
-		  end if
+		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  return true
+		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  me.MouseCursor = nil
+		  Me.MouseCursor = Nil
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
-		  me.MouseCursor = System.Cursors.FingerPointer
+		  Me.MouseCursor = System.Cursors.FingerPointer
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events labAppName
 	#tag Event
 		Sub Open()
-		  me.Text = "Xojo 2 DMG"
-		  me.TextSize = 18
-		  me.Bold = true
+		  Me.Text = "Xojo2DMG"
+		  Me.TextSize = 18
+		  Me.Bold = True
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  if (x >= 0) and (x < me.Width) and (y > 0) and (y < me.Height) then
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
-		  end if
+		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  return true
+		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  me.MouseCursor = nil
+		  Me.MouseCursor = Nil
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
-		  me.MouseCursor = System.Cursors.FingerPointer
+		  Me.MouseCursor = System.Cursors.FingerPointer
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events labAppVersion
 	#tag Event
 		Sub Open()
-		  if (App.ShortVersion <> "") then
-		    me.Text = App.ShortVersion
-		    return
-		  end if
+		  If (App.ShortVersion <> "") Then
+		    Me.Text = App.ShortVersion
+		    Return
+		  End If
 		  
-		  me.Text = Str(App.MajorVersion) + "." + Str(App.MinorVersion) + "." + Str(App.BugVersion)
+		  Me.Text = Str(App.MajorVersion) + "." + Str(App.MinorVersion) + "." + Str(App.BugVersion)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -704,11 +704,11 @@ End
 		  Dim d As New MessageDialog
 		  d.Icon = MessageDialog.GraphicQuestion
 		  d.ActionButton.Caption = "OK"
-		  d.CancelButton.Visible = false
+		  d.CancelButton.Visible = False
 		  d.Title = "XojoScript Evaluator"
 		  d.Message = "XojoScript Evaluator Result"
 		  d.Explanation = sResult
-		  call d.ShowModalWithin(Self)
+		  Call d.ShowModalWithin(Self)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -748,7 +748,7 @@ End
 		    Dim sExplanation As String
 		    Dim bSuccess As Boolean = False
 		    
-		    Dim bShowSystemPreferences As Boolean = false
+		    Dim bShowSystemPreferences As Boolean = False
 		    
 		    Select Case macOS_AEDeterminePermissionToAutomateTarget("com.apple.Terminal")
 		    Case CType(AEPermissionResult.procNotFound, Int32)
@@ -759,7 +759,7 @@ End
 		    Case CType(AEPermissionResult.errAEEventNotPermitted, Int32)
 		      sResult = sResult + "Not Permitted"
 		      sExplanation = "You should probably offer the user to open System Preferences, where the Checkbox needs to be set..."
-		      bShowSystemPreferences = true
+		      bShowSystemPreferences = True
 		    Case CType(AEPermissionResult.noErr, Int32)
 		      'all ok
 		    Else
@@ -866,10 +866,10 @@ End
 		    d.Explanation = "This might trigger the macOS Security Dialog." + EndOfLine + _
 		    "Terminal.app needs to be running, or you'll get 'ProcessNotRunning' as a result."
 		    
-		    #if DebugBuild then
+		    #If DebugBuild Then
 		      d.Explanation = d.Explanation + EndOfLine + EndOfLine + _
 		      "Note: This is a DebugRun. It seems that each DebugRun (if the Debug.app is not codesigned) is considered a 'new application' by macOS. CodeSign the DebugBuild or Build the app to see how things behave across multiple launches of the app."
-		    #endif
+		    #EndIf
 		    
 		    b = d.ShowModalWithin(Self)
 		    Select Case b
@@ -879,7 +879,7 @@ End
 		      Dim sResult As String = "Result: "
 		      Dim sExplanation As String
 		      
-		      Dim bShowSystemPreferences As Boolean = false
+		      Dim bShowSystemPreferences As Boolean = False
 		      
 		      Select Case iRes
 		      Case CType(AEPermissionResult.procNotFound, Int32)
@@ -891,7 +891,7 @@ End
 		      Case CType(AEPermissionResult.errAEEventNotPermitted, Int32)
 		        sResult = sResult + "Not Permitted"
 		        sExplanation = "You should probably see that the Checkbox is not selected in System Preferences..."
-		        bShowSystemPreferences = true
+		        bShowSystemPreferences = True
 		      Case CType(AEPermissionResult.noErr, Int32)
 		        sResult = sResult + "noErr"
 		        sExplanation = "So you should be able to automate Terminal.app"
@@ -936,9 +936,9 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  g.ForeColor = &cFFFFFF
-		  #if (XojoVersion >= 2018.03) then
-		    if IsDarkMode then g.ForeColor = &cD0D0D0
-		  #endif
+		  #If (XojoVersion >= 2018.03) Then
+		    If IsDarkMode Then g.ForeColor = &cD0D0D0
+		  #EndIf
 		  g.FillRect(0, 0, g.Width, g.Height)
 		  g.ForeColor = &c909090
 		  g.DrawRect(0, 0, g.Width, g.Height)
@@ -947,50 +947,50 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  me.MouseCursor = nil
+		  Me.MouseCursor = Nil
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
-		  me.MouseCursor = System.Cursors.FingerPointer
+		  Me.MouseCursor = System.Cursors.FingerPointer
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  if (x >= 0) and (x < me.Width) and (y > 0) and (y < me.Height) then
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://paypal.me/jotools")
-		  end if
+		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  return true
+		  Return True
 		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events labContact
 	#tag Event
 		Sub MouseExit()
-		  me.MouseCursor = nil
+		  Me.MouseCursor = Nil
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
-		  me.MouseCursor = System.Cursors.FingerPointer
+		  Me.MouseCursor = System.Cursors.FingerPointer
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(X As Integer, Y As Integer) As Boolean
-		  return true
+		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(X As Integer, Y As Integer)
-		  if (x >= 0) and (x < me.Width) and (y > 0) and (y < me.Height) then
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("mailto:xojo@jo-tools.ch")
-		  end if
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
