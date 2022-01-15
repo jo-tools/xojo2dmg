@@ -214,7 +214,7 @@
 					'https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/resolving_common_notarization_issues
 					'**************************************************************
 					
-					Dim bNOTARIZE As Boolean = false
+					Dim sNOTARIZE As String = "no"
 					
 					'set this Boolean to true if you want to send the built .dmg to Apple for Notarization
 					'you might want to notarize both Beta and Final Builds, but no
@@ -227,13 +227,13 @@
 					'      notarize every build.
 					select case PropertyValue("App.StageCode")
 					case "0" 'Development
-					bNOTARIZE = false
+					sNOTARIZE = "no"
 					case "1" 'Alpha
-					bNOTARIZE = false
+					sNOTARIZE = "no"
 					case "2" 'Beta
-					bNOTARIZE = true
+					sNOTARIZE = "yes"
 					case "3" 'Final
-					bNOTARIZE = true
+					sNOTARIZE = "yes"
 					end select
 					
 					
@@ -248,6 +248,16 @@
 					return
 					end if
 					
+					'Check: Unsupported XojoVersion when building Universal (Intel 64Bit, ARM 64Bit)
+					if ((CurrentBuildTarget = 24) and (Right(sBUILD_LOCATION, 18) = "/_macOS ARM 64 bit")) _
+					or _
+					((CurrentBuildTarget = 16) and (Right(sBUILD_LOCATION, 14) = "/_macOS 64 bit")) then
+					Print "Xojo2DMG doesn't support building Universal (Intel 64Bit, ARM 64Bit) with Xojo " + Format(XojoVersion, "0000.00#") + _
+					EndOfLine + EndOfLine + _
+					"The reason is that the PostBuild Scripts get triggered multiple times, with no indication when the Universal Build has finished."
+					return
+					end if
+					
 					if (sCODESIGN_IDENT = "") then
 					if (sBUILD_TYPE = "release") then
 					Print "Xojo2DMG: Add the required Variable 'sCODESIGN_IDENT' in the Post Build Step - Xojo2DMGScript in order to enable CodeSigning." + EndOfLine + EndOfLine + "The Script now continues to create a .dmg without CodeSigning (and without Notarization)."
@@ -256,20 +266,21 @@
 					end if
 					end if
 					
-					'Check Build Target
-					Dim sBUILD_TARGET_BITS As String = "unknown"
+					'Check Xojo's Build Target
 					select case CurrentBuildTarget
 					case 7
-					'Mac: Cocoa (32Bit)
-					sBUILD_TARGET_BITS = "32Bit"
+					'macOS: Intel 32Bit
 					if (not DebugBuild) then
-					Print "Xojo2DMG: Putting a 32Bit application into a DMG is fine." + EndOfLine + EndOfLine + "If you intend to CodeSign and Notarize, you should build a 64Bit application."
+					Print "Xojo2DMG: Putting a 32Bit application into a DMG is fine." + EndOfLine + EndOfLine + "If you intend to CodeSign and Notarize, you should build an Intel 64Bit or Universal (Intel 64Bit, ARM 64Bit) application."
 					end if
 					case 16
-					'Mac: Cocoa (64Bit)
-					sBUILD_TARGET_BITS = "64Bit"
+					'macOS: Intel 64Bit
+					case 24
+					'macOS: ARM 64Bit
+					case 9
+					'macOS: Universal (Intel 64Bit, ARM 64Bit)
 					else
-					Print "Supported Build Targets for Xojo2DMG are: Cocoa (32Bit / 64Bit)"
+					Print "Supported macOS Build Targets for Xojo2DMG are: Intel (32Bit / 64Bit), ARM (64Bit) and Universal (Intel 64Bit, ARM 64Bit)." + EndOfLine + EndOfLine + "CurrentBuildTarget: " + Str(CurrentBuildTarget)
 					return
 					end select
 					
@@ -306,19 +317,10 @@
 					sShellArguments.Append(sDMG_ICON_POSITION_ALIAS)
 					sShellArguments.Append(sDMG_FILE_ICON)
 					
-					'Building for 64Bit will remove the i386 parts of XojoFramework
-					'later (before CodeSigning)
-					sShellArguments.Append(sBUILD_TARGET_BITS)
-					
-					'Parameters for CodeSign
+					'Parameters for CodeSign and Notarization
 					sShellArguments.Append(sCODESIGN_IDENT)
 					sShellArguments.Append(sCODESIGN_ENTITLEMENTS)
-					
-					if bNOTARIZE then
-					sShellArguments.Append("yes")
-					else
-					sShellArguments.Append("no")
-					end if
+					sShellArguments.Append(sNOTARIZE)
 					
 					'Make sure the ShellScript is executable:
 					call DoShellCommand("chmod 755 """ + sPROJECT_PATH + "/scripts/xojo2dmg.sh""", 0)
