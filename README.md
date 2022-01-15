@@ -12,7 +12,7 @@ This example shows how a Post Build Script can be used in a Xojo project in orde
 You can easily customize the DiskImage's appearance by setting a couple of Variables in the Post Build Script. Additionally, even Notarization can be performed fully scripted. That requires to set up an item in your Keychain - see Info in the Script provided.
 
 
-## Requirements
+### Requirements
 1. Xojo running on macOS *(obviously... you can't CodeSign for macOS on Windows)*
 2. CodeSigning, CodeSigning-Validation and Notarization requires Xcode to be installed
 3. CodeSign of .dmg requires OS X 10.11.5 (or later)
