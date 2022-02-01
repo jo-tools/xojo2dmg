@@ -651,15 +651,32 @@ then
 fi
 sync
 
+# DMG Volume Icon
 if [ -n "${DMG_FILE_ICON}" ]; then
-echo ""
-echo "Xojo2DMG: adding the VolumeIcon to the final .dmg file using a Python Script"
-python << END_PYTHON
-import Cocoa
-import sys
+	echo ""
+	echo "Xojo2DMG: adding the VolumeIcon to the final .dmg file"
 
-Cocoa.NSWorkspace.sharedWorkspace().setIcon_forFile_options_(Cocoa.NSImage.alloc().initWithContentsOfFile_("${DMG_FILE_ICON}"), "${DMG_FINAL}", 0)
-END_PYTHON
+	# copy the VolumeIcon .icns
+	cp "${DMG_FILE_ICON}" "${DMG_FINAL}.icns"
+	sync
+
+	# Add icon to itself, meaning use itself as the icon
+	sips -i "${DMG_FINAL}.icns"
+	sync
+
+	# Take that icon and put it into a rsrc file
+	DeRez -only icns "${DMG_FINAL}.icns" > "${DMG_FINAL}.icns.rsrc"
+	sync
+
+	# Apply the rsrc file to the DMG
+	SetFile -a C "${DMG_FINAL}"
+	Rez -append "${DMG_FINAL}.icns.rsrc" -o "${DMG_FINAL}"
+	sync
+
+	# Remove the temporary .icns and .rsrc file
+	rm "${DMG_FINAL}.icns"
+	rm "${DMG_FINAL}.icns.rsrc"
+	sync
 fi
 
 
