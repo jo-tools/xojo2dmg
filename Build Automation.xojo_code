@@ -108,8 +108,8 @@
 					Dim sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 575" 'position the window, change according to your BackgroundPicture
 					Dim sDMG_ICON_SIZE As String = "128"
 					Dim sDMG_TEXT_SIZE As String = "16"
-					Dim sDMG_ICON_POSITION_APP As String = "160, 320" 'where to position the Icon of your App
-					Dim sDMG_ICON_POSITION_ALIAS As String = "500, 320"'where to position the Icon of the Alias to Applications
+					Dim sDMG_ICON_POSITION_APP As String = "160, 315" 'where to position the Icon of your App
+					Dim sDMG_ICON_POSITION_ALIAS As String = "500, 315"'where to position the Icon of the Alias to Applications
 					Dim sDMG_FILE_ICON As String = sPROJECT_PATH + "/scripts/resources/volumeicon.icns"
 					
 					'*************************
