@@ -722,7 +722,6 @@ NOTARIZATION_STATUS=""
 NOTARIZATION_ERROR=""
 APP_BUNDLE_IDENTIFIER=(`/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "${APP_FROM}/Contents/Info.plist"`)
 
-
 #Notarization requires macOS 10.13.6 or later
 if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 		echo ""
@@ -750,6 +749,8 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	xcrun altool --notarize-app --type osx --file "${DMG_FINAL}" --primary-bundle-id "${APP_BUNDLE_IDENTIFIER}" --username "${APPLEID}" --password @keychain:"${KEYCHAIN_APP_NOTARIZATION}" --asc-provider "${ASCPROVIDER}" > "${APP_NOTARIZATION_OUTPUT}" 2>&1
 	NOTARIZATION_RESULT=$?
 	sync
+
+	NOTARIZATION_UPLOADERROR=$(sed -n -e 's/^.*ERROR: //p' "${APP_NOTARIZATION_OUTPUT}")
 
 	REQUESTUUID=""
 	TERMINAL_GET_REQUEST_INFO=""
@@ -783,7 +784,15 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	else
 		NOTARIZATION_COMPLETED=0
 		NOTARIZATION_STATUS="not uploaded, no UUID received"
-	    NOTARIZATION_ERROR="Error trying to upload for Notarization. No Request UUID received."
+		NOTARIZATION_ERROR="Error trying to upload for Notarization. No Request UUID received."
+
+		echo "Xojo2DMG: Disk image was not notarized, status is ${NOTARIZATION_STATUS}."
+		if [ ! -z "$NOTARIZATION_UPLOADERROR" ]; then
+			echo "Xojo2DMG ERROR: Notarization Upload Error - ${NOTARIZATION_UPLOADERROR}"
+		else
+			echo "Xojo2DMG ERROR: Notarization Error - ${NOTARIZATION_ERROR}"
+		fi
+		exit 12
 	fi
 	
 	#cleanup output
