@@ -13,7 +13,11 @@
 					'1. copy the folder 'scripts' to your project folder.
 					'2. create a PostBuild Script, place it after the
 					'   build step and copy-and-paste this one.
-					'3. Read the Comments in the PostBuild Script,
+					'3. If you're using Xojo 2022r1 (or newer): make sure
+					'   this PostBuild Script runs after the Step 'Sign'.
+					'   Otherwise Xojo will overwrite the CodeSigning
+					'   again with it's 'Sign' step.
+					'4. Read the Comments in the PostBuild Script,
 					'   modify according to your needs (DMG Look&Feel,
 					'   CodeSign Entitlements, Notarization).
 					'**************************************************
@@ -81,7 +85,8 @@
 					sPROJECT_PATH = Mid(sPROJECT_PATH, 1, Len(sPROJECT_PATH)-1)
 					End If
 					Dim sBUILD_LOCATION As String = ReplaceAll(CurrentBuildLocation, "\", "") 'don't escape Path
-					Dim sBUILD_APPNAME As String = CurrentBuildAppName
+					Dim sBUILD_APPNAME As String = CurrentBuildAppName 'Xojo 2022r1 adds .app
+					If (Right(sBUILD_APPNAME, 4) = ".app") Then sBUILD_APPNAME = Left(sBUILD_APPNAME, Len(sBUILD_APPNAME)-4)
 					Dim sBUILD_TYPE As String = "release"
 					If DebugBuild Then sBUILD_TYPE = "debug"
 					Dim sDEBUGBUILD_CODESIGN As String = "no"
@@ -90,8 +95,8 @@
 					'************************************
 					'required: DMG settings/customization
 					'************************************
-					Dim sDMG_VOLUME_FILENAME As String = Trim(CurrentBuildAppName + " " + sApp_StageCode)
-					Dim sDMG_VOLUME_TITLE As String = CurrentBuildAppName + " " + sApp_Version
+					Dim sDMG_VOLUME_FILENAME As String = Trim(sBUILD_APPNAME + " " + sApp_StageCode)
+					Dim sDMG_VOLUME_TITLE As String = sBUILD_APPNAME + " " + sApp_Version
 					Dim sDMG_VOLUME_ICON As String = sPROJECT_PATH + "/scripts/resources/volumeicon.icns"
 					'Please note: the Images have to be 72DPI!
 					Dim sDMG_BACKGROUND_IMG_1x As String = sPROJECT_PATH + "/scripts/resources/backgroundImage_1x.png" 'Non-Retina
