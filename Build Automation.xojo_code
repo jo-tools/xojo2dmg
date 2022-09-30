@@ -51,6 +51,10 @@
 					sApp_StageCode = "Beta"
 					End Select
 					
+					'Detect if build is called in a GitHub Actions Workflow
+					Dim bIsGitHubActions As Boolean = EnvironmentVariable("GITHUB_WORKSPACE") <> "" And EnvironmentVariable("FOLDER_BUILDS") <> "" And EnvironmentVariable("FOLDER_BUILDS_MACOS_UNIVERSAL") <> "" And EnvironmentVariable("BUILD_MACOS_UNIVERSAL_POSTBUILD_SHELLSCRIPT") <> ""
+					
+					
 					'if you want to see what's going on in Terminal.app, then set bOpenInTerminal to true
 					'this might be a more helpful output when something goes wrong
 					'Notarization might take a long while... so you don't want the IDE to seem
@@ -135,6 +139,11 @@
 					'
 					'Dim sCODESIGN_IDENT As String = "Developer ID Application: YOUR NAME"
 					Dim sCODESIGN_IDENT As String = ""
+					
+					If bIsGitHubActions Then
+					Dim sEnvCodesignIdent As String = EnvironmentVariable("CODESIGN_IDENT")
+					If (sEnvCodesignIdent <> "") Then sCODESIGN_IDENT = sEnvCodesignIdent
+					End If
 					
 					'*********************
 					'CodeSign Entitlements
@@ -329,6 +338,32 @@
 					
 					'Make sure the ShellScript is executable:
 					Call DoShellCommand("chmod 755 """ + sPROJECT_PATH + "/scripts/xojo2dmg.sh""", 0)
+					
+					
+					If bIsGitHubActions Then
+					' ******************
+					' * GitHub Actions *
+					' ******************
+					sShellArguments(5) = Trim(sBUILD_APPNAME) 'sDMG_VOLUME_FILENAME without Stage Code in Filename
+					
+					'Write a Shell Script for Xojo2DMG, which will be executed later by a Workflow Job
+					Dim sGithubActionScript As String = EnvironmentVariable("GITHUB_WORKSPACE") + "/" + EnvironmentVariable("FOLDER_BUILDS")+ "/" + EnvironmentVariable("FOLDER_BUILDS_MACOS_UNIVERSAL") + "/" + EnvironmentVariable("BUILD_MACOS_UNIVERSAL_POSTBUILD_SHELLSCRIPT")
+					sGithubActionScript = ReplaceAll(sGithubActionScript, "\", "") 'don't escape Path
+					
+					Dim sQuote As String = "\"""
+					
+					Call DoShellCommand("echo #!/bin/sh > """ + sGithubActionScript + """")
+					Call DoShellCommand("echo # >> """ + sGithubActionScript + """")
+					Call DoShellCommand("echo " + sQuote + sPROJECT_PATH + "/scripts/xojo2dmg.sh" + sQuote + " " + sQuote + Join(sShellArguments, sQuote + " " + sQuote) + sQuote + " >> """ + sGithubActionScript + """")
+					
+					Call DoShellCommand("chmod 755  """ + sGithubActionScript + """")
+					
+					' ***************************
+					' * GitHub Actions end here *
+					' ***************************
+					' Shell Script will be called in a workflow step
+					Return
+					End If
 					
 					If (Not DebugBuild) And bOpenInTerminal Then
 					'Automate Terminal:
