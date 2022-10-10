@@ -53,7 +53,7 @@ CODESIGN_IDENT=${18}
 CODESIGN_ENTITLEMENTS=${19}
 
 NOTARIZATION_ENABLED=${20}
-KEYCHAIN_NOTARYTOOL_PROFILE=Xojo2DMGAppNotarization
+KEYCHAIN_NOTARYTOOL_PROFILE=Xojo2DMG-notarytool
 
 
 # check input
@@ -731,7 +731,7 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	echo "Xojo2DMG: Submitting to Apple for Notarization... This can take a while..."
 	APP_NOTARIZATION_OUTPUT="${BUILD_LOCATION}/notarization_output.txt"
 	APP_NOTARIZATION_LOG="${BUILD_LOCATION}/notarization_log.txt"
-	xcrun notarytool submit "${DMG_FINAL}" --keychain-profile "Xojo2DMG-notarytool" --wait 2>&1 | tee "${APP_NOTARIZATION_OUTPUT}"
+	xcrun notarytool submit "${DMG_FINAL}" --keychain-profile "$KEYCHAIN_NOTARYTOOL_PROFILE" --wait 2>&1 | tee "${APP_NOTARIZATION_OUTPUT}"
 	NOTARIZATION_RESULT=$?
 	sync
 	
@@ -755,7 +755,7 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	else
 		if [ ! -z $NOTARYTOOL_REQUEST_ID ]; then
 			echo "Xojo2DMG: Get Notarization Log"
-			xcrun notarytool log "${NOTARYTOOL_REQUEST_ID}" --keychain-profile "Xojo2DMG-notarytool" 2>&1 | tee "${APP_NOTARIZATION_LOG}"
+			xcrun notarytool log "${NOTARYTOOL_REQUEST_ID}" --keychain-profile "$KEYCHAIN_NOTARYTOOL_PROFILE" 2>&1 | tee "${APP_NOTARIZATION_LOG}"
 		fi
 		echo "Xojo2DMG ERROR: Notarization Error"
 		exit 12
