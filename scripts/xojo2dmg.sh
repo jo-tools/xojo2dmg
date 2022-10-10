@@ -19,15 +19,10 @@
 # https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow?language=objc
 # **************************************************************
 # 1st: You need to create an application specific password for your AppleID.
-# 2nd: The asc-provider flag for the notarization is needed if the AppleID is associated with multiple teams.
-# You need to indicate the 'provider short name' for the appropriate team.
-# We do this anyway (even with no multiple teams). You can get the required value 'ProviderShortname'
-# like this in Terminal: (provide AppleID and your application-specific-password for Notarization)
-# xcrun altool --list-providers -u "my-apple-id@icloud.com"
+# 2nd: You need to know the TeamID.
 #
-# Now that you have all you need:
-# Add that AppleID, asc-provider and password to your keychain:
-# security add-generic-password -s Xojo2DMGAppNotarization -a my-apple-id@icloud.com -j my-provider-shortname -w App-Specific-PaSSW0rd
+# Store these credentials (AppleID, TeamID, app-specific password) using Apple's notarytool to your keychain:
+# xcrun notarytool store-credentials "Xojo2DMG-notarytool" --apple-id "my-appleid@icloud.com" --team-id "XXXXXXXXXX" --password "aaaa-bbbb-cccc-dddd"
 # **************************************************************
 
 
@@ -58,7 +53,7 @@ CODESIGN_IDENT=${18}
 CODESIGN_ENTITLEMENTS=${19}
 
 NOTARIZATION_ENABLED=${20}
-KEYCHAIN_APP_NOTARIZATION=Xojo2DMGAppNotarization
+KEYCHAIN_NOTARYTOOL_PROFILE=Xojo2DMGAppNotarization
 
 
 # check input
@@ -238,32 +233,9 @@ fi
 if [ "${BUILD_TYPE}" = "release" ]; then
 	if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 		echo "Xojo2DMG: check notarization requirements"
-		if [ ! -z "${NOTARIZATION_ACCOUNT}" ] && [ ! -z "${NOTARIZATION_PROVIDER_SHORTNAME}" ] && [ ! -z "${NOTARIZATION_APPSPECIFIC_PASSWORD}" ]; then
-			echo "Xojo2DMG: check notarization requirements - found ENV of Github Actions"
-			APPLEID="${NOTARIZATION_ACCOUNT}"
-			ASCPROVIDER="${NOTARIZATION_PROVIDER_SHORTNAME}"
-			NOTARIZATION_PASSWORD="${NOTARIZATION_APPSPECIFIC_PASSWORD}"
-			NOTARIZATION_IN_GITHUB_ACTIONS=1
-		else
-			echo "Xojo2DMG: check notarization requirements - try search keychain"
-			SEC_NOTARIZATION=`security find-generic-password -s ${KEYCHAIN_APP_NOTARIZATION} -g 2>&1`
-			APPLEID=`echo "${SEC_NOTARIZATION}" | grep --text "acct" | cut -d \" -f 4`
-			ASCPROVIDER=`echo "${SEC_NOTARIZATION}" | grep --text "icmt" | cut -d \" -f 4`
-			NOTARIZATION_PASSWORD=`echo "$SEC_NOTARIZATION" | grep --text "password" | cut -d \" -f 2`
-		fi
-
-		if [ -z "$APPLEID" ]; then
-			echo "Xojo2DMG: APPLEID is not defined for Notarization in Keychain Item '${KEYCHAIN_APP_NOTARIZATION}'."
-			NOTARIZATION_PERFORM=0
-		fi
-
-		if [ -z "$NOTARIZATION_PASSWORD" ]; then
-			echo "Xojo2DMG: NOTARIZATION_PASSWORD is not defined for Notarization in Keychain Item '${KEYCHAIN_APP_NOTARIZATION}'."
-			NOTARIZATION_PERFORM=0
-		fi
-
-		if [ -z "$ASCPROVIDER" ]; then
-			echo "Xojo2DMG: ASCPROVIDER is not defined for Notarization in Keychain Item '${KEYCHAIN_APP_NOTARIZATION}'."
+		xcrun notarytool --version
+		if [ $? -gt 0 ]; then
+			echo "Xojo2DMG: It seems that notarytool is not available (requires Xcode 13 or later). Notarization will be disabled."
 			NOTARIZATION_PERFORM=0
 		fi
 	fi
@@ -732,15 +704,13 @@ rm -rf "${STAGING_DIR}"
 #*******************
 NOTARIZATION_COMPLETED=0
 NOTARIZATION_RESULT=0
-NOTARIZATION_STATUS=""
-NOTARIZATION_ERROR=""
 APP_BUNDLE_IDENTIFIER=(`/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "${APP_FROM}/Contents/Info.plist"`)
 
-#Notarization requires macOS 10.13.6 or later
+#Notarization requires macOS 11.3 or later
 if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 		echo ""
-		echo "Xojo2DMG: checking Notarization (requires macOS 10.13.6 or later)"
-		vercomp ${OS_VERSION} 10.13.6
+		echo "Xojo2DMG: checking Notarization (requires macOS 11.3 or later)"
+		vercomp ${OS_VERSION} 11.3.0
 		case $? in
 			0) op='=';;
 			1) op='>';;
@@ -749,7 +719,7 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 		if [[ $op = '<' ]]
 		then
 			echo ""
-			echo "Xojo2DMG: Can't Notarize, as this requires macOS 10.13.6 (or later)"
+			echo "Xojo2DMG: Can't Notarize, as this requires macOS 11.3 (or later)"
 			NOTARIZATION_PERFORM=0
 		fi
 fi
@@ -758,91 +728,41 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	echo "Xojo2DMG: Notarize by Apple"
 	sync
 	NOTARIZATION_COMPLETED=0
-	echo "Xojo2DMG: Uploading disk image for Notarization... This can take a while..."
+	echo "Xojo2DMG: Submitting to Apple for Notarization... This can take a while..."
 	APP_NOTARIZATION_OUTPUT="${BUILD_LOCATION}/notarization_output.txt"
-	if [ $NOTARIZATION_IN_GITHUB_ACTIONS -eq 1 ]; then
-		xcrun altool --notarize-app --type osx --file "${DMG_FINAL}" --primary-bundle-id "${APP_BUNDLE_IDENTIFIER}" --username "${APPLEID}" -p "${NOTARIZATION_PASSWORD}" --asc-provider "${ASCPROVIDER}" > "${APP_NOTARIZATION_OUTPUT}" 2>&1
-	else
-		xcrun altool --notarize-app --type osx --file "${DMG_FINAL}" --primary-bundle-id "${APP_BUNDLE_IDENTIFIER}" --username "${APPLEID}" --password @keychain:"${KEYCHAIN_APP_NOTARIZATION}" --asc-provider "${ASCPROVIDER}" > "${APP_NOTARIZATION_OUTPUT}" 2>&1
-	fi
+	APP_NOTARIZATION_LOG="${BUILD_LOCATION}/notarization_log.txt"
+	xcrun notarytool submit "${DMG_FINAL}" --keychain-profile "Xojo2DMG-notarytool" --wait 2>&1 | tee "${APP_NOTARIZATION_OUTPUT}"
 	NOTARIZATION_RESULT=$?
 	sync
-
-	NOTARIZATION_UPLOADERROR=$(sed -n -e 's/^.*ERROR: //p' "${APP_NOTARIZATION_OUTPUT}")
-
-	REQUESTUUID=""
-	TERMINAL_GET_REQUEST_INFO=""
-	if [ $NOTARIZATION_RESULT -eq 0 ]; then
-		REQUESTUUID=$(sed -n 's/RequestUUID = \(.*\)/\1/p' "${APP_NOTARIZATION_OUTPUT}")
-	fi
-	if [ ! -z $REQUESTUUID ]; then
-		TERMINAL_GET_REQUEST_INFO="See 'xcrun altool --notarization-info \"${REQUESTUUID}\" --username \"${APPLEID}\" --password @keychain:\"${KEYCHAIN_APP_NOTARIZATION}\" --asc-provider \"${ASCPROVIDER}\"'"
-		echo "Xojo2DMG: Notarization: Upload complete"
-		sync
-		echo "Xojo2DMG: Disk image has been uploaded. Request UUID is ${REQUESTUUID}."
-		echo "Xojo2DMG: Waiting 1 minute..."
-		sleep 60
-		echo "Xojo2DMG: Checking status every 25 seconds..."
-		NOTARIZATION_STATUS="in progress"
-		while [ "${NOTARIZATION_STATUS}" = "in progress" ]; do
-			sleep 25
-			echo "Checking status..."
-			if [ $NOTARIZATION_IN_GITHUB_ACTIONS -eq 1 ]; then
-				xcrun altool --notarization-info "${REQUESTUUID}" --username "${APPLEID}" -p "${NOTARIZATION_PASSWORD}" --asc-provider "${ASCPROVIDER}" > "${APP_NOTARIZATION_OUTPUT}" 2>&1
-			else
-				xcrun altool --notarization-info "${REQUESTUUID}" --username "${APPLEID}" --password @keychain:"${KEYCHAIN_APP_NOTARIZATION}" --asc-provider "${ASCPROVIDER}" > "${APP_NOTARIZATION_OUTPUT}" 2>&1
-			fi
-			NOTARIZATION_RESULT=$?
-			if [ $NOTARIZATION_RESULT -eq 0 ]; then
-				NOTARIZATION_COMPLETED=1
-				NOTARIZATION_STATUS=$(sed -ne 's/^[[:space:]]*Status: \(.*\)$/\1/p' "${APP_NOTARIZATION_OUTPUT}")
-				echo "Xojo2DMG: Status is ${NOTARIZATION_STATUS}"
-			else
-				NOTARIZATION_COMPLETED=0
-				NOTARIZATION_STATUS="failed"
-			    NOTARIZATION_ERROR="Failed to check on notarization status."
-			fi
-		done
-	else
-		NOTARIZATION_COMPLETED=0
-		NOTARIZATION_STATUS="not uploaded, no UUID received"
-		NOTARIZATION_ERROR="Error trying to upload for Notarization. No Request UUID received."
-
-		echo "Xojo2DMG: Disk image was not notarized, status is ${NOTARIZATION_STATUS}."
-		if [ ! -z "$NOTARIZATION_UPLOADERROR" ]; then
-			echo "Xojo2DMG ERROR: Notarization Upload Error - ${NOTARIZATION_UPLOADERROR}"
-		else
-			echo "Xojo2DMG ERROR: Notarization Error - ${NOTARIZATION_ERROR}"
-		fi
-		exit 12
-	fi
 	
-	#cleanup output
-	rm -f "${APP_NOTARIZATION_OUTPUT}"
-	sync
+	NOTARYTOOL_REQUEST_ID=$(sed -n 's/  id: \(.*\)/\1/p' "${APP_NOTARIZATION_OUTPUT}" | head -n 1)
+	NOTARYTOOL_STATUS=$(sed -n 's/  status: \(.*\)/\1/p' "${APP_NOTARIZATION_OUTPUT}" | tail -n 1)
 
-	if [ "${NOTARIZATION_STATUS}" = "success" ]; then
-		echo "Xojo2DMG: Notarization: Staple to Disk Image..."
+	if [ "${NOTARYTOOL_STATUS}" = "Accepted" ]; then
+		NOTARIZATION_COMPLETED=1
+		echo "Xojo2DMG: Notarization Accepted - Staple to Disk Image..."
 		sync
 		NOTARIZATION_STATUS="stapling to disk image"
 		xcrun stapler staple -v "${DMG_FINAL}"
 		NOTARIZATION_RESULT=$?
 		if [ $NOTARIZATION_RESULT -eq 0 ]; then
 			echo "Notarization: Staple to Disk Image successfully completed"
-			NOTARIZATION_STATUS="stapled"
 			NOTARIZATION_COMPLETED=2
 		else
-			NOTARIZATION_ERROR="Staple to Disk Image was not successful."
-			echo "Xojo2DMG ERROR: Notarization Error - ${NOTARIZATION_ERROR}"
+			echo "Xojo2DMG ERROR: Notarization Error - Staple to Disk Image was not successful."
 			exit 12
 		fi
 	else
-		echo "Xojo2DMG: Disk image was not notarized, status is ${NOTARIZATION_STATUS}."
-		NOTARIZATION_ERROR="Disk image was not notarized. Status is ${NOTARIZATION_STATUS}.\n${TERMINAL_GET_REQUEST_INFO}"
-		echo "Xojo2DMG ERROR: Notarization Error - ${NOTARIZATION_ERROR}"
+		if [ ! -z $NOTARYTOOL_REQUEST_ID ]; then
+			echo "Xojo2DMG: Get Notarization Log"
+			xcrun notarytool log "${NOTARYTOOL_REQUEST_ID}" --keychain-profile "Xojo2DMG-notarytool" 2>&1 | tee "${APP_NOTARIZATION_LOG}"
+		fi
+		echo "Xojo2DMG ERROR: Notarization Error"
 		exit 12
 	fi
 
+	#cleanup output - Notarization was successful
+	rm -f "${APP_NOTARIZATION_OUTPUT}"
 	sync
 
 	if [ $NOTARIZATION_COMPLETED -eq 2 ]; then
@@ -856,19 +776,17 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 			NOTARIZATION_STATUS="stapled"
 			NOTARIZATION_COMPLETED=3
 		else
-			NOTARIZATION_ERROR="Staple to Application was not successful."
-			echo "Xojo2DMG ERROR: Notarization Error - ${NOTARIZATION_ERROR}"
+			echo "Xojo2DMG ERROR: Notarization Error - Staple to Application was not successful."
 			exit 12
 		fi
 	fi
 
 	sync
 
-
 	if [ $NOTARIZATION_COMPLETED -eq 3 ]; then
 		echo "Xojo2DMG: Notarization by Apple has completed successfully."
 	else
-		echo "Xojo2DMG ERROR: Notarization could not be completed.\nNOTARIZATION_STATUS: ${NOTARIZATION_STATUS}:\nNOTARIZATION_ERROR: ${NOTARIZATION_ERROR}"
+		echo "Xojo2DMG ERROR: Notarization could not be completed."
 		exit 12
 	fi
 	sync

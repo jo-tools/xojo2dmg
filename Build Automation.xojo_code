@@ -172,7 +172,7 @@
 					'*********************
 					'This requires CodeSigning (with DeveloperID) to be enabled (see above)
 					'To additionally set up Notarization, Xojo2DMG will need a specific item in Keychain
-					'System requirement: macOS 10.13.6 (otherwise Notarization will be skipped)
+					'Minimum System requirements: macOS 11.3, Xcode 13 (otherwise Notarization will be skipped)
 					'
 					'Apple's Documentation:
 					'https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution
@@ -185,26 +185,14 @@
 					'1st: You need to create an application specific password for your AppleID:
 					'     https://support.apple.com/en-us/HT204397
 					'
-					'2nd: The asc-provider flag for the notarization is needed if the AppleID is associated with multiple teams.
-					'
-					'You need to indicate the 'provider short name' for the appropriate team.
-					'We do this anyway (even with no multiple teams).
-					'
-					'Starting in Xcode 11, you can use altool to get a table of providers, provider short names,
-					'and team IDs associated with a given username and password using the list-providers flag:
-					'
-					'xcrun altool --list-providers -u "my-apple-id@icloud.com"
-					'
-					'Note: provide your AppleID and your application-specific-password for Notarization
-					'      The password that it is asking for is the app specific password. The 19 character password. Not your Apple ID password.
-					'
+					'2nd: You need to know the TeamID. This is especially important if the AppleID is associated with multiple teams.
+					'     The TeamID is shown on https://developer.apple.com/ -> Account: MemberShip Details
 					'
 					'Now that you have all information you need:
-					'Add that AppleID, asc-provider and password to your keychain:
+					'Store these credentials (AppleID, TeamID, app-specific password) using Apple's notarytool to your keychain:
 					'
-					'security add-generic-password -s Xojo2DMGAppNotarization -a my-apple-id@icloud.com -j my-provider-shortname -w App-Specific-PaSSW0rd
+					'xcrun notarytool store-credentials "Xojo2DMG-notarytool" --apple-id "my-appleid@icloud.com" --team-id "XXXXXXXXXX" --password "aaaa-bbbb-cccc-dddd"
 					'
-					
 					'**************************************************************
 					'Notarization does not work?
 					'---------------------------
@@ -215,9 +203,9 @@
 					'Always good to check is: Launch Xcode, and see if everything
 					'is OK with your Account. Xcode -> Preferences -> Account
 					'
-					'Which Password for Notarization (for the Keychain item and 'xcrun altool' to figure out the 'provider short name')
+					'Which Password for Notarization (for the Keychain item and notarytool)
 					'-------------------------------
-					'The password that it is asking for is the app specific password. The 19 character password. Not your Apple ID password.
+					'The password that it is asking for is the app-specific password. The 19 character password. Not your Apple ID password.
 					'
 					'Error: xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
 					'--------------------------------------------------
