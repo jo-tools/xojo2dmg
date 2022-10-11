@@ -21,7 +21,7 @@
 # 1st: You need to create an application specific password for your AppleID.
 # 2nd: You need to know the TeamID.
 #
-# Store these credentials (AppleID, TeamID, app-specific password) using Apple's notarytool to your keychain:
+# Add the AppleID, TeamID and app-specific password to your keychain:
 # xcrun notarytool store-credentials "Xojo2DMG-notarytool" --apple-id "my-appleid@icloud.com" --team-id "XXXXXXXXXX" --password "aaaa-bbbb-cccc-dddd"
 # **************************************************************
 
@@ -53,8 +53,7 @@ CODESIGN_IDENT=${18}
 CODESIGN_ENTITLEMENTS=${19}
 
 NOTARIZATION_ENABLED=${20}
-KEYCHAIN_NOTARYTOOL_PROFILE=Xojo2DMG-notarytool
-
+NOTARYTOOL_KEYCHAIN_PROFILE=Xojo2DMG-notarytool
 
 # check input
 echo ""
@@ -212,14 +211,8 @@ DMG_FINAL="${BUILD_LOCATION}/${DMG_VOLUME_FILENAME}.dmg"
 STAGING_DIR="${BUILD_LOCATION}/DMG_Template"
 APP_TO="${STAGING_DIR}/${BUILD_APPNAME}.app"
 
-#Keychain: Notarization
+#Notarization
 NOTARIZATION_PERFORM=0
-SEC_NOTARIZATION=""
-APPLEID=""
-ASCPROVIDER=""
-NOTARIZATION_PASSWORD=""
-NOTARIZATION_IN_GITHUB_ACTIONS=0
-
 if [ "${NOTARIZATION_ENABLED}" = "yes" ]; then
 	NOTARIZATION_PERFORM=1
 fi
@@ -235,7 +228,8 @@ if [ "${BUILD_TYPE}" = "release" ]; then
 		echo "Xojo2DMG: check notarization requirements"
 		xcrun notarytool --version
 		if [ $? -gt 0 ]; then
-			echo "Xojo2DMG: It seems that notarytool is not available (requires Xcode 13 or later). Notarization will be disabled."
+			echo "Xojo2DMG: It seems that Xcode's notarytool is not available. Notarization will be disabled."
+			echo "Xojo2DMG: Notarytool is available in Xcode 13 (or newer)."
 			NOTARIZATION_PERFORM=0
 		fi
 	fi
@@ -725,13 +719,18 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 fi
 
 if [ $NOTARIZATION_PERFORM -eq 1 ]; then
+	NOTARIZATION_IN_GITHUB_ACTIONS_KEYCHAINPATH=""
+	if [ ! -z "${NOTARIZATION_ACCOUNT}" ] && [ ! -z "${NOTARIZATION_TEAMID}" ] && [ ! -z "${NOTARIZATION_APPSPECIFIC_PASSWORD}" ] && [ ! -z "${NOTARIZATION_KEYCHAIN_PATH}" ]; then
+		echo "Xojo2DMG: Notarization - use Keychain Path of Github Actions"
+		NOTARIZATION_IN_GITHUB_ACTIONS_KEYCHAINPATH="--keychain ${NOTARIZATION_KEYCHAIN_PATH}"
+	fi
 	echo "Xojo2DMG: Notarize by Apple"
 	sync
 	NOTARIZATION_COMPLETED=0
 	echo "Xojo2DMG: Submitting to Apple for Notarization... This can take a while..."
 	APP_NOTARIZATION_OUTPUT="${BUILD_LOCATION}/notarization_output.txt"
 	APP_NOTARIZATION_LOG="${BUILD_LOCATION}/notarization_log.txt"
-	xcrun notarytool submit "${DMG_FINAL}" --keychain-profile "$KEYCHAIN_NOTARYTOOL_PROFILE" --wait 2>&1 | tee "${APP_NOTARIZATION_OUTPUT}"
+	xcrun notarytool submit "${DMG_FINAL}" --keychain-profile "${NOTARYTOOL_KEYCHAIN_PROFILE}" $NOTARIZATION_IN_GITHUB_ACTIONS_KEYCHAINPATH --wait 2>&1 | tee "${APP_NOTARIZATION_OUTPUT}"
 	NOTARIZATION_RESULT=$?
 	sync
 	
@@ -755,7 +754,7 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	else
 		if [ ! -z $NOTARYTOOL_REQUEST_ID ]; then
 			echo "Xojo2DMG: Get Notarization Log"
-			xcrun notarytool log "${NOTARYTOOL_REQUEST_ID}" --keychain-profile "$KEYCHAIN_NOTARYTOOL_PROFILE" 2>&1 | tee "${APP_NOTARIZATION_LOG}"
+			xcrun notarytool log "${NOTARYTOOL_REQUEST_ID}" --keychain-profile "${NOTARYTOOL_KEYCHAIN_PROFILE}" $NOTARIZATION_IN_GITHUB_ACTIONS_KEYCHAINPATH 2>&1 | tee "${APP_NOTARIZATION_LOG}"
 		fi
 		echo "Xojo2DMG ERROR: Notarization Error"
 		exit 12
