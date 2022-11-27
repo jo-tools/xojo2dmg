@@ -662,8 +662,6 @@ fi
 
 # CodeSign the final .dmg
 if [ -n "${CODESIGN_IDENT}" ]; then
-	echo ""
-	echo "Xojo2DMG: CodeSign the final .dmg (requires OS X 10.11.5 or later)"
 	# this requires 10.11.5 or later
 	vercomp ${OS_VERSION} 10.11.5
 	case $? in
@@ -808,7 +806,15 @@ if [[ $op = '<' ]]
 then
 	echo "Xojo2DMG: Can't check CodeSign of the final .dmg, as this requires macOS 10.12.0 (or later)"
 else
+	echo "Xojo2DMG: checking CodeSign of the final .dmg"
+	codesign --verify --verbose "${DMG_FINAL}"
+	if [ $? -gt 0 ]; then
+		echo "Xojo2DMG ERROR: codesign --verify --verbose \"${DMG_FINAL}\" failed."
+		exit 12
+	fi
+
 	if [ $NOTARIZATION_PERFORM -eq 1 ]; then
+		#macOS 10.14.5 and later will fail the following checks if the .dmg or .app is not notarized
 		echo "Xojo2DMG: checking CodeSign of the notarized .dmg"
 		spctl -a -t open --context context:primary-signature -v "${DMG_FINAL}"
 		if [ $? -gt 0 ]; then
@@ -817,51 +823,11 @@ else
 		fi
 
 		echo ""
-		echo "Xojo2DMG: checking CodeSign... (spctl assess)"
-		echo "          this should now work since the .app has been notarized"
+		echo "Xojo2DMG: checking CodeSign and Notarization of the .app (spctl assess)"
 		spctl --assess -vvvv --type exec "${APP_FROM}"
 		if [ $? -gt 0 ]; then
 			echo "Xojo2DMG ERROR: spctl --assess -vvvv --type exec \"${APP_FROM}\" failed."
 			exit 12
-		fi
-	else
-		echo "Xojo2DMG: checking CodeSign of the .dmg (requires macOS 10.12.0 or later)"
-		spctl -a -t open --context context:primary-signature -v "${DMG_FINAL}"
-		if [ $? -gt 0 ]; then
-			#macOS 10.14.5 and later will fail this check if the .dmg is not notarized
-			vercomp ${OS_VERSION} 10.14.5
-			case $? in
-				0) op='=';;
-				1) op='>';;
-				2) op='<';;
-			esac
-			if [[ $op = '<' ]]
-			then
-				echo "Xojo2DMG ERROR: spctl -a -t open --context context:primary-signature -v \"${DMG_FINAL}\" failed."
-				exit 11
-			else
-				echo "Xojo2DMG: macOS 10.14.5 and later will fail to check the .dmg if it is not notarized. So this error is expected."
-			fi
-		fi
-
-		echo ""
-		echo "Xojo2DMG: checking CodeSign... (spctl assess)"
-		spctl --assess -vvvv --type exec "${APP_FROM}"
-		if [ $? -gt 0 ]; then
-			#macOS 10.14.5 and later will fail this check if the .dmg is not notarized
-			vercomp ${OS_VERSION} 10.14.5
-			case $? in
-				0) op='=';;
-				1) op='>';;
-				2) op='<';;
-			esac
-			if [[ $op = '<' ]]
-			then
-				echo "Xojo2DMG ERROR: spctl --assess -vvvv --type exec \"${APP_FROM}\" failed."
-				exit 11
-			else
-				echo "Xojo2DMG: macOS 10.14.5 and later may fail to check the .app if it is not notarized. So this error is somehow expected."
-			fi
 		fi
 	fi
 fi
