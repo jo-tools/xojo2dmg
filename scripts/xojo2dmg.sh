@@ -713,13 +713,14 @@ fi
 sync
 sleep 2
 
-	
 #checking CodeSign of .dmg
-echo "Xojo2DMG: checking CodeSign of the final .dmg"
-codesign --verify --verbose "${DMG_FINAL}"
-if [ $? -gt 0 ]; then
-	echo "Xojo2DMG ERROR: codesign --verify --verbose \"${DMG_FINAL}\" failed."
-	exit 12
+if [ -n "${CODESIGN_IDENT}" ]; then
+	echo "Xojo2DMG: checking CodeSign of the final .dmg"
+	codesign --verify --verbose "${DMG_FINAL}"
+	if [ $? -gt 0 ]; then
+		echo "Xojo2DMG ERROR: codesign --verify --verbose \"${DMG_FINAL}\" failed."
+		exit 12
+	fi
 fi
 
 if [ $NOTARIZATION_PERFORM -eq 1 ]; then
