@@ -177,9 +177,23 @@ vercomp ${OS_VERSION} 10.12.0
 case $? in
 		0) OS_PRODUCTNAME='macOS';;
 		1) OS_PRODUCTNAME='macOS';;
-		2) op='OS X';;
+		2) OS_PRODUCTNAME='OS X';;
 esac
 echo "Xojo2DMG: ${OS_PRODUCTNAME} ${OS_VERSION}"
+
+# Xojo2DMG requires macOS 11.3.0
+vercomp ${OS_VERSION} 11.3.0
+case $? in
+	0) op='=';;
+	1) op='>';;
+	2) op='<';;
+esac
+if [[ $op = '<' ]]
+then
+	echo ""
+	echo "Xojo2DMG ERROR: Minimum OS requirement to run xojo2dmg.sh is macOS 11.3."
+	exit 5
+fi
 
 
 # do we need to CodeSign, create DMG with or without Notarization
@@ -350,69 +364,47 @@ if [ -n "${CODESIGN_IDENT}" ]; then
 	echo "Xojo2DMG: Remove extended Attributes"
 	xattr -rc "${APP_FROM}"
 
-	CODESIGN_PARAM_TIMESTAMP=
-	CODESIGN_HARDENED_RUNTIME=0
-	# Hardened Runtime requires 10.13.6 or later
-	vercomp ${OS_VERSION} 10.13.6
-	case $? in
-		0) op='=';;
-		1) op='>';;
-		2) op='<';;
-	esac
-	if [[ $op = '<' ]]
-	then
-		echo "Xojo2DMG: will CodeSign without Hardened Runtime which requires macOS 10.13.6 (or later)"
+	echo "Xojo2DMG: perform CodeSign with Hardened Runtime"
+	#Prepare Entitlements
+	if [ ! -f "${CODESIGN_ENTITLEMENTS}" ]; then
+		echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
+		exit 11
+	fi
+
+	echo "Xojo2DMG: Make a copy of Entitlements.plist"
+	CODESIGN_ENTITLEMENTS_APPLY="${BUILD_LOCATION}/CodeSign_Entitlements.plist"
+	if [ -f "${CODESIGN_ENTITLEMENTS_APPLY}" ]; then
+		rm -f "${CODESIGN_ENTITLEMENTS_APPLY}"
+	fi
+	ditto "${CODESIGN_ENTITLEMENTS}" "${CODESIGN_ENTITLEMENTS_APPLY}"
+	sync
+	if [ ! -f "${CODESIGN_ENTITLEMENTS_APPLY}" ]; then
+		echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
+		exit 11
+	fi
+	if [ "${BUILD_TYPE}" = "release" ]; then
+		echo "Xojo2DMG: Entitlements: Disable com.apple.security.cs.debugger"
+		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/true/false/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
 	else
-		echo "Xojo2DMG: perform CodeSign with Hardened Runtime"
-		#Prepare Entitlements
-		if [ ! -f "${CODESIGN_ENTITLEMENTS}" ]; then
-			echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
-			exit 11
-		fi
-
-		echo "Xojo2DMG: Make a copy of Entitlements.plist"
-		CODESIGN_ENTITLEMENTS_APPLY="${BUILD_LOCATION}/CodeSign_Entitlements.plist"
-		if [ -f "${CODESIGN_ENTITLEMENTS_APPLY}" ]; then
-			rm -f "${CODESIGN_ENTITLEMENTS_APPLY}"
-		fi
-		ditto "${CODESIGN_ENTITLEMENTS}" "${CODESIGN_ENTITLEMENTS_APPLY}"
-		sync
-		if [ ! -f "${CODESIGN_ENTITLEMENTS_APPLY}" ]; then
-			echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
-			exit 11
-		fi
-		if [ "${BUILD_TYPE}" = "release" ]; then
-			echo "Xojo2DMG: Entitlements: Disable com.apple.security.cs.debugger"
-			sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/true/false/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
-		else
-			echo "Xojo2DMG: Entitlements: Enable com.apple.security.cs.debugger"
-			sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/false/true/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
-		fi
-
-		CODESIGN_PARAM_TIMESTAMP="--timestamp"
-		CODESIGN_HARDENED_RUNTIME=1
+		echo "Xojo2DMG: Entitlements: Enable com.apple.security.cs.debugger"
+		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/false/true/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
 	fi
 
 	# Sign the app
-
 	echo ""
 	echo "Xojo2DMG: Sign the app..."
 	echo ""
 	echo "Xojo2DMG: Sign the app... (Contents/MacOS)"
-	codesign $CODESIGN_PARAM_TIMESTAMP -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/MacOS/"*.dylib
+	codesign --timestamp -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/MacOS/"*.dylib
 	echo ""
 	echo "Xojo2DMG: Sign the app... (Contents/Frameworks, Part 1)"
-	codesign $CODESIGN_PARAM_TIMESTAMP -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/Frameworks/"*
+	codesign --timestamp -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/Frameworks/"*
 	echo ""
 	echo "Xojo2DMG: Sign the app... (Contents/Frameworks, Part 2)"
-	codesign $CODESIGN_PARAM_TIMESTAMP -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/Frameworks/"*.framework
+	codesign --timestamp -f -s "${CODESIGN_IDENT}" "${APP_FROM}/Contents/Frameworks/"*.framework
 	echo ""
 	echo "Xojo2DMG: Sign the app... (.app)"
-	if [ $CODESIGN_HARDENED_RUNTIME -eq 1 ]; then
-		codesign $CODESIGN_PARAM_TIMESTAMP -f --options runtime --entitlements "${CODESIGN_ENTITLEMENTS_APPLY}" --deep -s "${CODESIGN_IDENT}" "${APP_FROM}"
-	else
-		codesign $CODESIGN_PARAM_TIMESTAMP -f --deep -s "${CODESIGN_IDENT}" "${APP_FROM}"
-	fi
+	codesign --timestamp -f --options runtime --entitlements "${CODESIGN_ENTITLEMENTS_APPLY}" --deep -s "${CODESIGN_IDENT}" "${APP_FROM}"
 
 	echo ""
 	echo "Xojo2DMG: waiting for App to finish signing..."
@@ -438,31 +430,6 @@ if [ -n "${CODESIGN_IDENT}" ]; then
 		exit 11
 	fi
 
-	#only perform spctl assess for release builds, not for debug builds
-	if [ "${BUILD_TYPE}" = "release" ]; then
-		#spctl assess might fail with: source=Unnotarized Developer ID
-		#so we only do that after the Notarization step on machines that require notarization
-		vercomp ${OS_VERSION} 10.13.6
-		case $? in
-			0) op='=';;
-			1) op='>';;
-			2) op='<';;
-		esac
-		if [[ $op = '<' ]]
-		then
-			echo ""
-			echo "Xojo2DMG: checking CodeSign... (spctl assess)"
-			spctl --assess -vvvv --type exec "${APP_FROM}"
-			if [ $? -gt 0 ]; then
-				echo "Xojo2DMG ERROR: spctl --assess -vvvv --type exec \"${APP_FROM}\" failed."
-				exit 11
-			fi
-		else
-			echo ""
-			echo "Xojo2DMG: checking CodeSign is not performing 'spctl assess' before"
-			echo "          the notarization step (if enabled)"
-		fi
-	fi
 	echo ""
 	echo "Xojo2DMG: finished checking CodeSign"
 	sleep 1
@@ -471,7 +438,6 @@ else
 	NOTARIZATION_PERFORM=0
 	echo "Xojo2DMG: no codesign - no notarization"
 fi
-
 
 
 # Prepare Environment to build the DMG
@@ -618,17 +584,6 @@ if [ $? -gt 0 ]; then
 	exit 8
 fi
 
-# hdiutil internet-enable has been removed in macOS 10.15
-vercomp ${OS_VERSION} 10.15.0
-case $? in
-	0) op='=';;
-	1) op='>';;
-	2) op='<';;
-esac
-if [[ $op = '<' ]]
-then
-	hdiutil internet-enable -yes "${DMG_FINAL}"
-fi
 sync
 
 # DMG Volume Icon
@@ -662,25 +617,12 @@ fi
 
 # CodeSign the final .dmg
 if [ -n "${CODESIGN_IDENT}" ]; then
-	# this requires 10.11.5 or later
-	vercomp ${OS_VERSION} 10.11.5
-	case $? in
-		0) op='=';;
-		1) op='>';;
-		2) op='<';;
-	esac
-	if [[ $op = '<' ]]
-	then
-		echo ""
-		echo "Xojo2DMG: Can't CodeSign the final .dmg, as this requires OS X 10.11.5 (or later)"
-	else
-		echo ""
-		echo "Xojo2DMG: CodeSign the final .dmg"
-		codesign $CODESIGN_PARAM_TIMESTAMP --force --sign "${CODESIGN_IDENT}" "${DMG_FINAL}"
-		if [ $? -gt 0 ]; then
-			echo "Xojo2DMG ERROR: codesign $CODESIGN_PARAM_TIMESTAMP --force --sign \"${CODESIGN_IDENT}\" \"${DMG_FINAL}\" failed."
-			exit 11
-		fi
+	echo ""
+	echo "Xojo2DMG: CodeSign the final .dmg"
+	codesign --timestamp --force --sign "${CODESIGN_IDENT}" "${DMG_FINAL}"
+	if [ $? -gt 0 ]; then
+		echo "Xojo2DMG ERROR: codesign --timestamp --force --sign \"${CODESIGN_IDENT}\" \"${DMG_FINAL}\" failed."
+		exit 11
 	fi
 fi
 
@@ -697,24 +639,6 @@ rm -rf "${STAGING_DIR}"
 NOTARIZATION_COMPLETED=0
 NOTARIZATION_RESULT=0
 APP_BUNDLE_IDENTIFIER=(`/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "${APP_FROM}/Contents/Info.plist"`)
-
-#Notarization requires macOS 11.3 or later
-if [ $NOTARIZATION_PERFORM -eq 1 ]; then
-		echo ""
-		echo "Xojo2DMG: checking Notarization (requires macOS 11.3 or later)"
-		vercomp ${OS_VERSION} 11.3.0
-		case $? in
-			0) op='=';;
-			1) op='>';;
-			2) op='<';;
-		esac
-		if [[ $op = '<' ]]
-		then
-			echo ""
-			echo "Xojo2DMG: Can't Notarize, as this requires macOS 11.3 (or later)"
-			NOTARIZATION_PERFORM=0
-		fi
-fi
 
 if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	NOTARIZATION_IN_GITHUB_ACTIONS_KEYCHAINPATH=""
@@ -739,7 +663,6 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 		NOTARIZATION_COMPLETED=1
 		echo "Xojo2DMG: Notarization Accepted - Staple to Disk Image..."
 		sync
-		NOTARIZATION_STATUS="stapling to disk image"
 		xcrun stapler staple -v "${DMG_FINAL}"
 		NOTARIZATION_RESULT=$?
 		if [ $NOTARIZATION_RESULT -eq 0 ]; then
@@ -765,12 +688,10 @@ if [ $NOTARIZATION_PERFORM -eq 1 ]; then
 	if [ $NOTARIZATION_COMPLETED -eq 2 ]; then
 		echo "Xojo2DMG: Notarization: Staple to Application..."
 		sync
-		NOTARIZATION_STATUS="stapling to application"
 		xcrun stapler staple -v "${APP_FROM}"
 		NOTARIZATION_RESULT=$?
 		if [ $NOTARIZATION_RESULT -eq 0 ]; then
 			echo "Xojo2DMG: Notarization: Staple to Application successfully completed"
-			NOTARIZATION_STATUS="stapled"
 			NOTARIZATION_COMPLETED=3
 		else
 			echo "Xojo2DMG ERROR: Notarization Error - Staple to Application was not successful."
@@ -792,43 +713,31 @@ fi
 sync
 sleep 2
 
-	
 #checking CodeSign of .dmg
-# this requires 10.12.0 or later
-echo ""
-vercomp ${OS_VERSION} 10.12.0
-case $? in
-	0) op='=';;
-	1) op='>';;
-	2) op='<';;
-esac
-if [[ $op = '<' ]]
-then
-	echo "Xojo2DMG: Can't check CodeSign of the final .dmg, as this requires macOS 10.12.0 (or later)"
-else
+if [ -n "${CODESIGN_IDENT}" ]; then
 	echo "Xojo2DMG: checking CodeSign of the final .dmg"
 	codesign --verify --verbose "${DMG_FINAL}"
 	if [ $? -gt 0 ]; then
 		echo "Xojo2DMG ERROR: codesign --verify --verbose \"${DMG_FINAL}\" failed."
 		exit 12
 	fi
+fi
 
-	if [ $NOTARIZATION_PERFORM -eq 1 ]; then
-		#macOS 10.14.5 and later will fail the following checks if the .dmg or .app is not notarized
-		echo "Xojo2DMG: checking CodeSign of the notarized .dmg"
-		spctl -a -t open --context context:primary-signature -v "${DMG_FINAL}"
-		if [ $? -gt 0 ]; then
-			echo "Xojo2DMG ERROR: spctl -a -t open --context context:primary-signature -v \"${DMG_FINAL}\" failed."
-			exit 12
-		fi
+if [ $NOTARIZATION_PERFORM -eq 1 ]; then
+	#macOS 10.14.5 and later will fail the following checks if the .dmg or .app is not notarized
+	echo "Xojo2DMG: checking CodeSign of the notarized .dmg"
+	spctl -a -t open --context context:primary-signature -v "${DMG_FINAL}"
+	if [ $? -gt 0 ]; then
+		echo "Xojo2DMG ERROR: spctl -a -t open --context context:primary-signature -v \"${DMG_FINAL}\" failed."
+		exit 12
+	fi
 
-		echo ""
-		echo "Xojo2DMG: checking CodeSign and Notarization of the .app (spctl assess)"
-		spctl --assess -vvvv --type exec "${APP_FROM}"
-		if [ $? -gt 0 ]; then
-			echo "Xojo2DMG ERROR: spctl --assess -vvvv --type exec \"${APP_FROM}\" failed."
-			exit 12
-		fi
+	echo ""
+	echo "Xojo2DMG: checking CodeSign and Notarization of the .app (spctl assess)"
+	spctl --assess -vvvv --type exec "${APP_FROM}"
+	if [ $? -gt 0 ]; then
+		echo "Xojo2DMG ERROR: spctl --assess -vvvv --type exec \"${APP_FROM}\" failed."
+		exit 12
 	fi
 fi
 
@@ -846,7 +755,6 @@ else
 fi
 cd "${BUILD_LOCATION}"
 ditto -c -k --keepParent --sequesterRsrc --zlibCompressionLevel 9 "./${APP_FROM_FILENAME}" "./${APP_ZIP_FILENAME}"
-
 
 sync
 sleep 5

@@ -15,9 +15,9 @@ You can easily customize the DiskImage's appearance by setting a couple of Varia
 ### Requirements
 1. Xojo running on macOS *(obviously... you can't CodeSign for macOS on Windows)*
 2. CodeSigning, CodeSigning-Validation and Notarization requires Xcode to be installed
-3. CodeSign of .dmg requires OS X 10.11.5 *(or later)*
-4. Validation of the .dmg's CodeSignature requires macOS 10.12.0 *(or later)*
-5. Notarization: Xcode 13, macOS 11.3 *(or later)*
+5. Xojo2DMG requires
+   1. to be run on **macOS 11.3** *(or later)*
+   2. have **Xcode 13** *(or later)* installed
 
 
 ### ScreenShots
