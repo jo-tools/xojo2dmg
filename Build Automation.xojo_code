@@ -393,10 +393,10 @@
 					'xojo2dmg.sh will 'exit 9' if required variables are missing
 					sXojo2CodeSignErrors.Append("Xojo2DMG: Missing some input variables.")
 					Case 11
-					'xojo2dmg.sh will 'exit 9' if CodeSigning (and it's validation) has failed
+					'xojo2dmg.sh will 'exit 11' if CodeSigning (and it's validation) has failed
 					sXojo2CodeSignErrors.Append("Xojo2DMG: There's something wrong with CodeSign.")
 					Case 12
-					'xojo2dmg.sh will 'exit 9' if Notarization (and it's validation) has failed
+					'xojo2dmg.sh will 'exit 12' if Notarization (and it's validation) has failed
 					sXojo2CodeSignErrors.Append("Xojo2DMG: There's something wrong with Notarization.")
 					Case 0
 					'Yeah... it's all OK!
