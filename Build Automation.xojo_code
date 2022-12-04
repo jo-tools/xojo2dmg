@@ -56,6 +56,7 @@
 					
 					'If you want to use a folder other than '/scripts', then change this variable
 					Dim sFolderScripts As String = "/scripts"
+					Dim sFolderScriptsResources As String = sFolderScripts + "/resources"
 					
 					'if you want to see what's going on in Terminal.app, then set bOpenInTerminal to true
 					'this might be a more helpful output when something goes wrong
@@ -103,17 +104,17 @@
 					'************************************
 					Dim sDMG_VOLUME_FILENAME As String = Trim(sBUILD_APPNAME + " " + sApp_StageCode)
 					Dim sDMG_VOLUME_TITLE As String = sBUILD_APPNAME + " " + sApp_Version
-					Dim sDMG_VOLUME_ICON As String = sPROJECT_PATH + sFolderScripts +"/resources/volumeicon.icns"
+					Dim sDMG_VOLUME_ICON As String = sPROJECT_PATH + sFolderScriptsResources + "/volumeicon.icns"
 					'Please note: the Images have to be 72DPI!
-					Dim sDMG_BACKGROUND_IMG_1x As String = sPROJECT_PATH + sFolderScripts + "/resources/backgroundImage_1x.png" 'Non-Retina
-					Dim sDMG_BACKGROUND_IMG_2x As String = sPROJECT_PATH + sFolderScripts + "/resources/backgroundImage_2x.png" 'Retina
+					Dim sDMG_BACKGROUND_IMG_1x As String = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_1x.png" 'Non-Retina
+					Dim sDMG_BACKGROUND_IMG_2x As String = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_2x.png" 'Retina
 					Select Case PropertyValue("App.StageCode")
 					Case "3" 'Final
 					'use the BackgroundImage set just above
 					Else
 					'not a final build - you might want to use a different BackgroundImage that has a 'PreRelease label'
-					'sDMG_BACKGROUND_IMG_1x = sPROJECT_PATH + sFolderScripts + "/resources/backgroundImage_1x.png" 'Non-Retina
-					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + sFolderScripts + "/resources/backgroundImage_2x.png" 'Retina
+					'sDMG_BACKGROUND_IMG_1x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_1x.png" 'Non-Retina
+					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_2x.png" 'Retina
 					End Select
 					Dim sDMG_ALIAS_CAPTION As String = "copy 2 Applications" 'how to label the Alias to the Applications folder
 					Dim sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 575" 'position the window, change according to your BackgroundPicture
@@ -121,7 +122,7 @@
 					Dim sDMG_TEXT_SIZE As String = "16"
 					Dim sDMG_ICON_POSITION_APP As String = "160, 315" 'where to position the Icon of your App
 					Dim sDMG_ICON_POSITION_ALIAS As String = "500, 315"'where to position the Icon of the Alias to Applications
-					Dim sDMG_FILE_ICON As String = sPROJECT_PATH + sFolderScripts + "/resources/volumeicon.icns"
+					Dim sDMG_FILE_ICON As String = sPROJECT_PATH + sFolderScriptsResources + "/volumeicon.icns"
 					
 					'*************************
 					'CodeSign with DeveloperID
@@ -164,7 +165,7 @@
 					'For your own app: I suggest to set them all to false first
 					'And only set those to true that you really need
 					
-					Dim sCODESIGN_ENTITLEMENTS As String = sPROJECT_PATH + sFolderScripts + "/resources/entitlements.plist"
+					Dim sCODESIGN_ENTITLEMENTS As String = sPROJECT_PATH + sFolderScriptsResources + "/entitlements.plist"
 					
 					
 					'*********************
