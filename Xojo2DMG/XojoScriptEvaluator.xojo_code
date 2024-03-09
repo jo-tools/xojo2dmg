@@ -3,6 +3,9 @@ Protected Class XojoScriptEvaluator
 Inherits XojoScript
 	#tag Event
 		Function CompilerError(location As XojoScriptLocation, error As XojoScript.Errors, errorInfo As Dictionary) As Boolean
+		  #Pragma unused location
+		  #Pragma unused errorInfo
+		  
 		  mResult = ErrorCodeToString(error)
 		  
 		End Function
@@ -232,43 +235,57 @@ Inherits XojoScript
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="State"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="States"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Source"
 			Visible=true
 			Group="Behavior"
+			InitialValue=""
 			Type="String"
 			EditorType="String"
 		#tag EndViewProperty

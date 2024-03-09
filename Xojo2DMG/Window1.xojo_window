@@ -626,6 +626,8 @@ End
 #tag Events cnvAppIcon
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
 		  g.DrawPicture(AppIcon_128, 0, 0, 64, 64, 0, 0, AppIcon_128.Width, AppIcon_128.Height)
 		End Sub
 	#tag EndEvent
@@ -638,6 +640,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
 		End Function
 	#tag EndEvent
@@ -670,6 +675,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
 		End Function
 	#tag EndEvent
@@ -912,10 +920,10 @@ End
 #tag Events cnvPayPal
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
 		  g.ForeColor = &cFFFFFF
-		  #If (XojoVersion >= 2018.03) Then
-		    If IsDarkMode Then g.ForeColor = &cD0D0D0
-		  #EndIf
+		  If IsDarkMode Then g.ForeColor = &cD0D0D0
 		  g.FillRect(0, 0, g.Width, g.Height)
 		  g.ForeColor = &c909090
 		  g.DrawRect(0, 0, g.Width, g.Height)
@@ -942,6 +950,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
 		End Function
 	#tag EndEvent
@@ -960,6 +971,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
 		End Function
 	#tag EndEvent
