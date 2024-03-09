@@ -6,7 +6,10 @@
 			Begin BuildStepList Mac OS X
 				Begin BuildProjectStep Build
 				End
-				Begin IDEScriptBuildStep Xojo2DMG , AppliesTo = 0
+				Begin SignProjectStep Sign
+				  DeveloperID=
+				End
+				Begin IDEScriptBuildStep Xojo2DMG , AppliesTo = 0, Architecture = 0, Target = 0
 					'**************************************************
 					'Xojo2DMG - How to use with your Xojo-built .app?
 					'**************************************************
