@@ -1,13 +1,13 @@
 Type=Desktop
 RBProjectVersion=2023.04
-MinIDEVersion=20150400
+MinIDEVersion=20210300
 OrigIDEVersion=00000000
 Folder=resources;resources;&h000000003990F7FF;&h0000000000000000;false
 BuildSteps=Build Automation;Build Automation.xojo_code;&h000000007106C7FF;&h0000000000000000;false
 Folder=Xojo2DMG;Xojo2DMG;&h00000000605BD7FF;&h0000000000000000;false
 Plist=Info;scripts/resources/Info.plist;&h000000005435A7FF;&h00000000605BD7FF;false
 Class=App;Xojo2DMG/App.xojo_code;&h000000004AFCCFFF;&h00000000605BD7FF;false
-Window=Window1;Xojo2DMG/Window1.xojo_window;&h0000000074773FFF;&h00000000605BD7FF;false
+DesktopWindow=Window1;Xojo2DMG/Window1.xojo_window;&h0000000074773FFF;&h00000000605BD7FF;false
 MenuBar=MainMenuBar;Xojo2DMG/MainMenuBar.xojo_menu;&h00000000371E07FF;&h00000000605BD7FF;false
 Module=modMacOsApplications;Xojo2DMG/modMacOsApplications.xojo_code;&h0000000009304FFF;&h00000000605BD7FF;false
 Module=modAppleScriptUtils;Xojo2DMG/modAppleScriptUtils.xojo_code;&h000000002EF41FFF;&h00000000605BD7FF;false

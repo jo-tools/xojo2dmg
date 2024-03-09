@@ -1,36 +1,34 @@
-#tag Window
-Begin Window Window1
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow Window1
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   2
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   480
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   924715007
    MenuBarVisible  =   True
-   MinHeight       =   480
-   MinimizeButton  =   True
-   MinWidth        =   600
-   Placement       =   0
+   MinimumHeight   =   480
+   MinimumWidth    =   600
    Resizeable      =   True
    Title           =   "Xojo2DMG"
+   Type            =   0
    Visible         =   True
    Width           =   600
-   Begin Canvas cnvAppIcon
+   Begin DesktopCanvas cnvAppIcon
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   0
-      DoubleBuffer    =   False
       Enabled         =   True
       Height          =   64
       HelpTag         =   "https://www.jo-tools.ch/xojo/xojo2dmg/"
@@ -52,11 +50,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   64
    End
-   Begin Label labAppName
+   Begin DesktopLabel labAppName
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   "https://www.jo-tools.ch/xojo/xojo2dmg/"
@@ -76,7 +72,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Xojo2DMG"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c0072D800
       TextFont        =   "System"
       TextSize        =   0.0
@@ -87,11 +83,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   200
    End
-   Begin Label labAppVersion
+   Begin DesktopLabel labAppVersion
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   ""
@@ -111,7 +105,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "AppVersion"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
@@ -122,7 +116,8 @@ Begin Window Window1
       Visible         =   True
       Width           =   200
    End
-   Begin Separator Separator1
+   Begin DesktopSeparator Separator1
+      AllowTabStop    =   True
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   3
@@ -138,17 +133,14 @@ Begin Window Window1
       Scope           =   2
       TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   100
       Transparent     =   True
       Visible         =   True
       Width           =   600
    End
-   Begin Label labAppInfo
+   Begin DesktopLabel labAppInfo
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   160
       HelpTag         =   ""
@@ -179,7 +171,8 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Separator Separator2
+   Begin DesktopSeparator Separator2
+      AllowTabStop    =   True
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   3
@@ -195,17 +188,14 @@ Begin Window Window1
       Scope           =   2
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   280
       Transparent     =   True
       Visible         =   True
       Width           =   600
    End
-   Begin Label labXojoScriptExpression
+   Begin DesktopLabel labXojoScriptExpression
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -236,7 +226,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   155
    End
-   Begin TextField edtXojoScriptExpression
+   Begin DesktopTextField edtXojoScriptExpression
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
@@ -245,8 +235,6 @@ Begin Window Window1
       Bold            =   False
       Border          =   True
       CueText         =   ""
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Format          =   ""
       Height          =   22
@@ -279,7 +267,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   300
    End
-   Begin PushButton btnXojoScriptEval
+   Begin DesktopButton btnXojoScriptEval
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -311,11 +299,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
-   Begin Label labTests
+   Begin DesktopLabel labTests
       AutoDeactivate  =   True
       Bold            =   True
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -346,11 +332,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labXojoScriptNote
+   Begin DesktopLabel labXojoScriptNote
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   40
       HelpTag         =   ""
@@ -381,11 +365,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labAppleScriptAutomation
+   Begin DesktopLabel labAppleScriptAutomation
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -416,7 +398,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   170
    End
-   Begin PushButton btnAppleScriptAutomation
+   Begin DesktopButton btnAppleScriptAutomation
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -448,7 +430,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   180
    End
-   Begin PushButton btnAppleScriptAutomationPermission
+   Begin DesktopButton btnAppleScriptAutomationPermission
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -480,11 +462,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   180
    End
-   Begin Label labXojoScriptNote1
+   Begin DesktopLabel labXojoScriptNote1
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   40
       HelpTag         =   ""
@@ -515,11 +495,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labThanks
+   Begin DesktopLabel labThanks
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   ""
@@ -539,7 +517,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Would you like to say 'Thank you'?"
-      TextAlign       =   2
+      TextAlign       =   3
       TextColor       =   &c66666600
       TextFont        =   "SmallSystem"
       TextSize        =   0.0
@@ -550,12 +528,11 @@ Begin Window Window1
       Visible         =   True
       Width           =   209
    End
-   Begin Canvas cnvPayPal
+   Begin DesktopCanvas cnvPayPal
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   0
-      DoubleBuffer    =   False
       Enabled         =   True
       Height          =   30
       HelpTag         =   "https://paypal.me/jotools"
@@ -577,11 +554,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   106
    End
-   Begin Label labContact
+   Begin DesktopLabel labContact
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   "xojo@jo-tools.ch"
@@ -601,7 +576,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Contact"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c0072CE00
       TextFont        =   "System"
       TextSize        =   0.0
@@ -613,7 +588,7 @@ Begin Window Window1
       Width           =   70
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h21
@@ -650,19 +625,19 @@ End
 
 #tag Events cnvAppIcon
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As Rect)
 		  g.DrawPicture(AppIcon_128, 0, 0, 64, 64, 0, 0, AppIcon_128.Width, AppIcon_128.Height)
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  Return True
 		End Function
 	#tag EndEvent
@@ -680,21 +655,21 @@ End
 #tag EndEvents
 #tag Events labAppName
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  Me.Text = "Xojo2DMG"
-		  Me.TextSize = 18
+		  Me.FontSize = 18
 		  Me.Bold = True
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  Return True
 		End Function
 	#tag EndEvent
@@ -712,9 +687,9 @@ End
 #tag EndEvents
 #tag Events labAppVersion
 	#tag Event
-		Sub Open()
-		  If (App.ShortVersion <> "") Then
-		    Me.Text = App.ShortVersion
+		Sub Opening()
+		  If (App.Version <> "") Then
+		    Me.Text = App.Version
 		    Return
 		  End If
 		  
@@ -724,7 +699,7 @@ End
 #tag EndEvents
 #tag Events btnXojoScriptEval
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  Dim oXojoScriptEvaluator As New XojoScriptEvaluator
 		  Dim sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
 		  
@@ -735,13 +710,13 @@ End
 		  d.Title = "XojoScript Evaluator"
 		  d.Message = "XojoScript Evaluator Result"
 		  d.Explanation = sResult
-		  Call d.ShowModalWithin(Self)
+		  Call d.ShowModal(Self)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnAppleScriptAutomation
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  #If TargetMacOS Then
 		    Self.CheckTerminalAppRunning()
 		    
@@ -868,7 +843,7 @@ End
 #tag EndEvents
 #tag Events btnAppleScriptAutomationPermission
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  #If TargetMacOS Then
 		    Self.CheckTerminalAppRunning()
 		    
@@ -936,7 +911,7 @@ End
 #tag EndEvents
 #tag Events cnvPayPal
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As Rect)
 		  g.ForeColor = &cFFFFFF
 		  #If (XojoVersion >= 2018.03) Then
 		    If IsDarkMode Then g.ForeColor = &cD0D0D0
@@ -959,14 +934,14 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("https://paypal.me/jotools")
 		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  Return True
 		End Function
 	#tag EndEvent
@@ -984,12 +959,12 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    ShowURL("mailto:xojo@jo-tools.ch")
 		  End If
