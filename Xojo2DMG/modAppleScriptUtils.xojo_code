@@ -1,6 +1,7 @@
 #tag Module
 Protected Module modAppleScriptUtils
-	#tag Method, Flags = &h0
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) )
+	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit))
 		Function macOS_AEDeterminePermissionToAutomateTarget(psTargetBundleIdentifier As String) As Int32
 		  #If TargetMacOS Then
 		    'OSStatus status;
@@ -20,16 +21,24 @@ Protected Module modAppleScriptUtils
 		      Return CType(AEPermissionResult.noErr, Int32) 'not available, no issue
 		    End If
 		    
-		    Declare Function NSClassFromString Lib "Cocoa" (className As CFStringRef) As Ptr
-		    Soft Declare Function descriptorWithBundleIdentifier Lib "Foundation" selector "descriptorWithBundleIdentifier:" (ptrNSAppleEventDescriptorClass As Ptr, bundleIdentifier As CFStringRef) As Ptr 'macOS 10.11+
-		    Declare Function aeDesc Lib "Foundation" selector "aeDesc" (ptrNSAppleEventDescriptor As Ptr) As Ptr
-		    
-		    Soft Declare Function AEDeterminePermissionToAutomateTarget Lib "Cocoa" (targetAEAddressDesc As Ptr, theAEEventClass As CFStringRef, theAEEventID As CFStringRef, askUserIfNeeded As Boolean) As Int32 'macOS 10.14+
-		    
-		    Dim ptrNSAppleEventDescriptorClass As Ptr = NSClassFromString("NSAppleEventDescriptor")
-		    Dim ptrNSAppleEventDescriptor As Ptr = descriptorWithBundleIdentifier(ptrNSAppleEventDescriptorClass, psTargetBundleIdentifier)
-		    Dim ptrAeDesc As Ptr = aeDesc(ptrNSAppleEventDescriptor)
-		    Return AEDeterminePermissionToAutomateTarget(ptrAeDesc, "****", "****", False)
+		    Try
+		      // https://developer.apple.com/documentation/coreservices/3025784-aedeterminepermissiontoautomatet?language=objc
+		      
+		      Declare Function NSClassFromString Lib "Cocoa" (className As CFStringRef) As Ptr
+		      Soft Declare Function descriptorWithBundleIdentifier Lib "Foundation" Selector "descriptorWithBundleIdentifier:" (ptrNSAppleEventDescriptorClass As Ptr, bundleIdentifier As CFStringRef) As Ptr 'macOS 10.11+
+		      Declare Function aeDesc Lib "Foundation" Selector "aeDesc" (ptrNSAppleEventDescriptor As Ptr) As Ptr
+		      
+		      Soft Declare Function AEDeterminePermissionToAutomateTarget Lib "Cocoa" (targetAEAddressDesc As Ptr, theAEEventClass As CFStringRef, theAEEventID As CFStringRef, askUserIfNeeded As Boolean) As Int32 'macOS 10.14+
+		      
+		      Var ptrNSAppleEventDescriptorClass As Ptr = NSClassFromString("NSAppleEventDescriptor")
+		      Var ptrNSAppleEventDescriptor As Ptr = descriptorWithBundleIdentifier(ptrNSAppleEventDescriptorClass, psTargetBundleIdentifier)
+		      Var ptrAeDesc As Ptr = aeDesc(ptrNSAppleEventDescriptor)
+		      Return AEDeterminePermissionToAutomateTarget(ptrAeDesc, "****", "****", False)
+		      
+		    Catch err As RuntimeException
+		      'ignore: return that process could not be found
+		      Return CType(AEPermissionResult.procNotFound, Int32)
+		    End Try
 		    
 		  #EndIf
 		  
@@ -37,23 +46,24 @@ Protected Module modAppleScriptUtils
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit))
 		Function macOS_SystemPreferences_PrivacyAutomation() As Boolean
 		  #If TargetMacOS Then
 		    //A list of possible links is here: https://macosxautomation.com/system-prefs-links.html
 		    
-		    //[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Automation"]];
 		    Declare Function NSClassFromString Lib "Cocoa" (className As CFStringRef) As Ptr
-		    Declare Function sharedWorkspace Lib "AppKit" selector "sharedWorkspace" ( obj As Ptr ) As Ptr
-		    Declare Function URLWithString Lib "Foundation" selector "URLWithString:" (ptrNSURLClass As Ptr, url As CFStringRef) As Ptr
-		    Declare Function openURL Lib "AppKit" selector "openURL:" ( obj As Ptr, url As Ptr ) As Boolean
+		    Declare Function sharedWorkspace Lib "AppKit" Selector "sharedWorkspace" ( obj As Ptr ) As Ptr
+		    Declare Function URLWithString Lib "Foundation" Selector "URLWithString:" (ptrNSURLClass As Ptr, url As CFStringRef) As Ptr
+		    Declare Function openURL Lib "AppKit" Selector "openURL:" ( obj As Ptr, url As Ptr ) As Boolean
+		    
 		    Try
-		      Dim ptrNSURLClass As Ptr = NSClassFromString("NSURL")
-		      Dim ptrNSUrl As Ptr = URLWithString(ptrNSURLClass, "x-apple.systempreferences:com.apple.preference.security?Privacy_Automation")
+		      Var ptrNSURLClass As Ptr = NSClassFromString("NSURL")
+		      Var ptrNSUrl As Ptr = URLWithString(ptrNSURLClass, "x-apple.systempreferences:com.apple.preference.security?Privacy_Automation")
 		      
-		      Dim ptrNSWorkspaceClass As Ptr = NSClassFromString("NSWorkspace")
-		      Dim ptrNSWorkspaceSharedWorkspace As Ptr = sharedWorkspace(ptrNSWorkspaceClass)
-		      Return openURL( ptrNSWorkspaceSharedWorkspace, ptrNSUrl)
+		      Var ptrNSWorkspaceClass As Ptr = NSClassFromString("NSWorkspace")
+		      Var ptrNSWorkspaceSharedWorkspace As Ptr = sharedWorkspace(ptrNSWorkspaceClass)
+		      
+		      Return openURL(ptrNSWorkspaceSharedWorkspace, ptrNSUrl)
 		      
 		    Catch err As RuntimeException
 		      'ignore
@@ -68,9 +78,8 @@ Protected Module modAppleScriptUtils
 
 
 	#tag Note, Name = Note
-		If you're going to use AppleScript-Automation,
-		then don't forget to add the Info.plist with 
-		a NSAppleEventsUsageDescription to your Xojo project :-)
+		If you're going to use AppleScript-Automation, then don't forget to add the Info.plist with a NSAppleEventsUsageDescription to your Xojo project.
+		If you are CodeSigning (with hardened Runtime) and/or Notarizing your application: Make sure to have the Entitlement enabled: com.apple.security.automation.apple-events.
 		
 		
 		Reset Permissions (of all your apps)
@@ -80,7 +89,7 @@ Protected Module modAppleScriptUtils
 	#tag EndNote
 
 
-	#tag Enum, Name = AEPermissionResult, Type = Int32, Flags = &h0
+	#tag Enum, Name = AEPermissionResult, Type = Int32, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit))
 		noErr=0
 		  errAEEventWouldRequireUserConsent=-1744
 		  errAEEventNotPermitted=-1743
@@ -93,7 +102,9 @@ Protected Module modAppleScriptUtils
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -101,12 +112,15 @@ Protected Module modAppleScriptUtils
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -114,6 +128,7 @@ Protected Module modAppleScriptUtils
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -121,6 +136,7 @@ Protected Module modAppleScriptUtils
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module

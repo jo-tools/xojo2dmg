@@ -9,6 +9,7 @@ Plist=Info;scripts/resources/Info.plist;&h000000005435A7FF;&h00000000605BD7FF;fa
 Class=App;Xojo2DMG/App.xojo_code;&h000000004AFCCFFF;&h00000000605BD7FF;false
 Window=Window1;Xojo2DMG/Window1.xojo_window;&h0000000074773FFF;&h00000000605BD7FF;false
 MenuBar=MainMenuBar;Xojo2DMG/MainMenuBar.xojo_menu;&h00000000371E07FF;&h00000000605BD7FF;false
+Module=modMacOsApplications;Xojo2DMG/modMacOsApplications.xojo_code;&h0000000009304FFF;&h00000000605BD7FF;false
 Module=modAppleScriptUtils;Xojo2DMG/modAppleScriptUtils.xojo_code;&h000000002EF41FFF;&h00000000605BD7FF;false
 Class=XojoScriptEvaluator;Xojo2DMG/XojoScriptEvaluator.xojo_code;&h00000000711AED1D;&h00000000605BD7FF;false
 MultiImage=AppIcon_128;resources/AppIcon_128.xojo_image;&h000000006DB3EFFF;&h000000003990F7FF;false
