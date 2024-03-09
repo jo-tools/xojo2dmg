@@ -1,39 +1,35 @@
-#tag Window
-Begin Window Window1
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow Window1
    Backdrop        =   0
-   CloseButton     =   True
-   Compatibility   =   ""
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   2
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   480
    ImplicitInstance=   True
-   LiveResize      =   True
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   924715007
    MenuBarVisible  =   True
-   MinHeight       =   480
-   MinimizeButton  =   True
-   MinWidth        =   600
-   Placement       =   0
+   MinimumHeight   =   480
+   MinimumWidth    =   600
    Resizeable      =   True
    Title           =   "Xojo2DMG"
+   Type            =   0
    Visible         =   True
    Width           =   600
-   Begin Canvas cnvAppIcon
+   Begin DesktopCanvas cnvAppIcon
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   0
-      DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   True
       Height          =   64
       HelpTag         =   "https://www.jo-tools.ch/xojo/xojo2dmg/"
       Index           =   -2147483648
@@ -54,11 +50,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   64
    End
-   Begin Label labAppName
+   Begin DesktopLabel labAppName
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   "https://www.jo-tools.ch/xojo/xojo2dmg/"
@@ -78,7 +72,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Xojo2DMG"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c0072D800
       TextFont        =   "System"
       TextSize        =   0.0
@@ -89,11 +83,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   200
    End
-   Begin Label labAppVersion
+   Begin DesktopLabel labAppVersion
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   ""
@@ -113,7 +105,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "AppVersion"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0
@@ -124,7 +116,8 @@ Begin Window Window1
       Visible         =   True
       Width           =   200
    End
-   Begin Separator Separator1
+   Begin DesktopSeparator Separator1
+      AllowTabStop    =   True
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   3
@@ -140,17 +133,14 @@ Begin Window Window1
       Scope           =   2
       TabIndex        =   3
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   100
       Transparent     =   True
       Visible         =   True
       Width           =   600
    End
-   Begin Label labAppInfo
+   Begin DesktopLabel labAppInfo
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   160
       HelpTag         =   ""
@@ -181,7 +171,8 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Separator Separator2
+   Begin DesktopSeparator Separator2
+      AllowTabStop    =   True
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   3
@@ -197,17 +188,14 @@ Begin Window Window1
       Scope           =   2
       TabIndex        =   5
       TabPanelIndex   =   0
-      TabStop         =   True
       Top             =   280
       Transparent     =   True
       Visible         =   True
       Width           =   600
    End
-   Begin Label labXojoScriptExpression
+   Begin DesktopLabel labXojoScriptExpression
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -238,7 +226,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   155
    End
-   Begin TextField edtXojoScriptExpression
+   Begin DesktopTextField edtXojoScriptExpression
       AcceptTabs      =   False
       Alignment       =   0
       AutoDeactivate  =   True
@@ -247,8 +235,6 @@ Begin Window Window1
       Bold            =   False
       Border          =   True
       CueText         =   ""
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Format          =   ""
       Height          =   22
@@ -281,10 +267,10 @@ Begin Window Window1
       Visible         =   True
       Width           =   300
    End
-   Begin PushButton btnXojoScriptEval
+   Begin DesktopButton btnXojoScriptEval
       AutoDeactivate  =   True
       Bold            =   False
-      ButtonStyle     =   "0"
+      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "Eval"
       Default         =   False
@@ -313,11 +299,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
-   Begin Label labTests
+   Begin DesktopLabel labTests
       AutoDeactivate  =   True
       Bold            =   True
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -348,11 +332,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labXojoScriptNote
+   Begin DesktopLabel labXojoScriptNote
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   40
       HelpTag         =   ""
@@ -383,11 +365,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labAppleScriptAutomation
+   Begin DesktopLabel labAppleScriptAutomation
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   20
       HelpTag         =   ""
@@ -418,10 +398,10 @@ Begin Window Window1
       Visible         =   True
       Width           =   170
    End
-   Begin PushButton btnAppleScriptAutomation
+   Begin DesktopButton btnAppleScriptAutomation
       AutoDeactivate  =   True
       Bold            =   False
-      ButtonStyle     =   "0"
+      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "Automate Terminal.app"
       Default         =   False
@@ -450,10 +430,10 @@ Begin Window Window1
       Visible         =   True
       Width           =   180
    End
-   Begin PushButton btnAppleScriptAutomationPermission
+   Begin DesktopButton btnAppleScriptAutomationPermission
       AutoDeactivate  =   True
       Bold            =   False
-      ButtonStyle     =   "0"
+      ButtonStyle     =   0
       Cancel          =   False
       Caption         =   "Determine Permission"
       Default         =   False
@@ -482,11 +462,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   180
    End
-   Begin Label labXojoScriptNote1
+   Begin DesktopLabel labXojoScriptNote1
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   40
       HelpTag         =   ""
@@ -517,11 +495,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   560
    End
-   Begin Label labThanks
+   Begin DesktopLabel labThanks
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   ""
@@ -541,7 +517,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Would you like to say 'Thank you'?"
-      TextAlign       =   2
+      TextAlign       =   3
       TextColor       =   &c66666600
       TextFont        =   "SmallSystem"
       TextSize        =   0.0
@@ -552,14 +528,12 @@ Begin Window Window1
       Visible         =   True
       Width           =   209
    End
-   Begin Canvas cnvPayPal
+   Begin DesktopCanvas cnvPayPal
       AcceptFocus     =   False
       AcceptTabs      =   False
       AutoDeactivate  =   True
       Backdrop        =   0
-      DoubleBuffer    =   False
       Enabled         =   True
-      EraseBackground =   True
       Height          =   30
       HelpTag         =   "https://paypal.me/jotools"
       Index           =   -2147483648
@@ -580,11 +554,9 @@ Begin Window Window1
       Visible         =   True
       Width           =   106
    End
-   Begin Label labContact
+   Begin DesktopLabel labContact
       AutoDeactivate  =   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       Height          =   30
       HelpTag         =   "xojo@jo-tools.ch"
@@ -604,7 +576,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Contact"
-      TextAlign       =   1
+      TextAlign       =   2
       TextColor       =   &c0072CE00
       TextFont        =   "System"
       TextSize        =   0.0
@@ -616,27 +588,65 @@ Begin Window Window1
       Width           =   70
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h21
+		Private Sub CheckTerminalAppRunning()
+		  #If TargetMacOS Then
+		    If (Not ApplicationIsRunning(constBundleIdentifier_Terminal)) Then
+		      Var d As New MessageDialog
+		      Var b As MessageDialogButton
+		      d.IconType = MessageDialog.IconTypes.Question
+		      d.ActionButton.Caption = "Launch Terminal.app"
+		      d.CancelButton.Visible = True
+		      d.Title = "Terminal.app"
+		      d.Message = "Launch Terminal.app?"
+		      d.Explanation = "Terminal.app needs to be running, or you'll get 'ProcessNotRunning' as a result."
+		      
+		      b = d.ShowModal(Self)
+		      
+		      Select Case b
+		      Case d.ActionButton
+		        Call LaunchAppByBundleID(constBundleIdentifier_Terminal)
+		      End Select
+		    End If
+		  #EndIf
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Constant, Name = constBundleIdentifier_Terminal, Type = String, Dynamic = False, Default = \"com.apple.Terminal", Scope = Private
+	#tag EndConstant
+
+
 #tag EndWindowCode
 
 #tag Events cnvAppIcon
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
 		  g.DrawPicture(AppIcon_128, 0, 0, 64, 64, 0, 0, AppIcon_128.Width, AppIcon_128.Height)
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
+		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -648,27 +658,34 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events labAppName
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  Me.Text = "Xojo2DMG"
-		  Me.TextSize = 18
+		  Me.FontSize = 18
 		  Me.Bold = True
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
+		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -680,14 +697,15 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events labAppVersion
 	#tag Event
-		Sub Open()
-		  If (App.ShortVersion <> "") Then
-		    Me.Text = App.ShortVersion
+		Sub Opening()
+		  If (App.Version <> "") Then
+		    Me.Text = App.Version
 		    Return
 		  End If
 		  
@@ -697,36 +715,39 @@ End
 #tag EndEvents
 #tag Events btnXojoScriptEval
 	#tag Event
-		Sub Action()
-		  Dim oXojoScriptEvaluator As New XojoScriptEvaluator
-		  Dim sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
+		Sub Pressed()
+		  Var oXojoScriptEvaluator As New XojoScriptEvaluator
+		  Var sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
 		  
-		  Dim d As New MessageDialog
-		  d.Icon = MessageDialog.GraphicQuestion
+		  Var d As New MessageDialog
+		  d.IconType = MessageDialog.IconTypes.Question
 		  d.ActionButton.Caption = "OK"
 		  d.CancelButton.Visible = False
 		  d.Title = "XojoScript Evaluator"
 		  d.Message = "XojoScript Evaluator Result"
 		  d.Explanation = sResult
-		  Call d.ShowModalWithin(Self)
+		  Call d.ShowModal(Self)
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnAppleScriptAutomation
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  #If TargetMacOS Then
-		    Dim d As MessageDialog
+		    Self.CheckTerminalAppRunning()
+		    
+		    Var d As MessageDialog
 		    #If DebugBuild Then
 		      d = New MessageDialog
-		      Dim b As MessageDialogButton
-		      d.Icon = MessageDialog.GraphicQuestion
+		      Var b As MessageDialogButton
+		      d.IconType = MessageDialog.IconTypes.Question
 		      d.ActionButton.Caption = "OK"
 		      d.CancelButton.Visible = True
 		      d.Title = "Example"
 		      d.Message = "Automate Terminal.app."
-		      d.Explanation = "Note: This is a DebugRun. It seems that each DebugRun (if the Debug.app is not codesigned) is considered a 'new application' by macOS. CodeSign the DebugBuild or Build the app to see how things behave across multiple launches of the app."
-		      b = d.ShowModalWithin(Self)
+		      d.Explanation = "Note: This is a DebugRun. It seems that each DebugRun (especially if the Debug.app is not codesigned) is considered a 'new application' by macOS. Build the app to see how things behave across multiple launches of the app."
+		      b = d.ShowModal(Self)
 		      Select Case b
 		      Case d.ActionButton
 		        'ok, let's continue
@@ -735,22 +756,18 @@ End
 		      End Select
 		    #EndIf
 		    
-		    Dim sTerminalBundleIdenfifier As String = "com.apple.Terminal"
 		    
 		    '1st we need to make sure Terminal.app is running
 		    'that's not automation yet - the security will kick in later when doing "tell application"
-		    Dim sh As New Shell
+		    Var sh As New Shell
 		    sh.Execute("osascript -e 'launch application ""Terminal""' -e 'delay 1'")
-		    If (sh.ErrorCode <> 0) Then Break
+		    If (sh.ExitCode <> 0) Then Break
 		    
 		    'ok, now that Terminal.app should be running, let's determine if we can automate it.
-		    Dim sResult As String
-		    Dim sExplanation As String
-		    Dim bSuccess As Boolean = False
+		    Var sResult As String
+		    Var sExplanation As String
 		    
-		    Dim bShowSystemPreferences As Boolean = False
-		    
-		    Select Case macOS_AEDeterminePermissionToAutomateTarget("com.apple.Terminal")
+		    Select Case macOS_AEDeterminePermissionToAutomateTarget(constBundleIdentifier_Terminal)
 		    Case CType(AEPermissionResult.procNotFound, Int32)
 		      sResult = "Process not found"
 		      sExplanation = "Terminal.app needs to be running in order to be automated..."
@@ -759,7 +776,6 @@ End
 		    Case CType(AEPermissionResult.errAEEventNotPermitted, Int32)
 		      sResult = sResult + "Not Permitted"
 		      sExplanation = "You should probably offer the user to open System Preferences, where the Checkbox needs to be set..."
-		      bShowSystemPreferences = True
 		    Case CType(AEPermissionResult.noErr, Int32)
 		      'all ok
 		    Else
@@ -769,27 +785,17 @@ End
 		    If (sResult <> "") Then
 		      'something is not working, and we know it
 		      d = New MessageDialog
-		      d.Icon = MessageDialog.GraphicNote
+		      d.IconType = MessageDialog.IconTypes.Note
+		      d.ActionButton.Caption = "OK"
+		      d.CancelButton.Visible = False
 		      d.Title = "Error"
 		      d.Message = sResult
 		      d.Explanation = sExplanation
-		      If bShowSystemPreferences Then
-		        d.ActionButton.Caption = "System Preferences"
-		        d.CancelButton.Visible = True
-		        If d.ShowModalWithin(Self) = d.ActionButton Then
-		          Call macOS_SystemPreferences_PrivacyAutomation
-		        End If
-		      Else
-		        d.ActionButton.Caption = "OK"
-		        d.CancelButton.Visible = False
-		        Call d.ShowModalWithin(Self)
-		      End If
-		      
-		      
+		      Call d.ShowModal(Self)
 		      Return
 		    End If
 		    
-		    Dim sTitle As String = ""
+		    Var sTitle As String = ""
 		    sResult = ""
 		    sExplanation = ""
 		    
@@ -805,10 +811,10 @@ End
 		    'In Terminal, execute: tccutil reset AppleEvents
 		    '**********************************************************
 		    
-		    Dim oNow As New Date
+		    Var oNow As DateTime = DateTime.Now
 		    sh.Execute("osascript -e 'tell application ""Terminal""' -e 'if not (exists window 1) then reopen' -e 'activate' -e 'do script ""echo \""Xojo AppleScript Example " + oNow.SQLDateTime + "\"""" in Window 1' -e 'activate' -e 'end tell'")
 		    
-		    If (sh.ErrorCode = 0) Then
+		    If (sh.ExitCode = 0) Then
 		      'all ok
 		      sTitle = "Success"
 		      sResult = "All done..."
@@ -820,7 +826,7 @@ End
 		      sExplanation = "Something didn't work as expected. Terminal.app has not been automated."
 		      
 		      'could it be that the user hasn't allowed automation when having been asked just before?
-		      Select Case macOS_AEDeterminePermissionToAutomateTarget("com.apple.Terminal")
+		      Select Case macOS_AEDeterminePermissionToAutomateTarget(constBundleIdentifier_Terminal)
 		      Case CType(AEPermissionResult.procNotFound, Int32)
 		        'should no longer be the case
 		      Case CType(AEPermissionResult.errAEEventWouldRequireUserConsent, Int32)
@@ -837,28 +843,31 @@ End
 		    
 		    'Notify with success/error
 		    d = New MessageDialog
-		    d.Icon = MessageDialog.GraphicNote
+		    d.IconType = MessageDialog.IconTypes.Note
 		    d.ActionButton.Caption = "OK"
 		    d.CancelButton.Visible = False
 		    d.Title = sTitle
 		    d.Message = sResult
 		    d.Explanation = sExplanation
-		    Call d.ShowModalWithin(Self)
+		    Call d.ShowModal(Self)
 		    
 		  #Else
 		    MsgBox "This example is for macOS only..."
 		  #EndIf
+		  
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnAppleScriptAutomationPermission
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  #If TargetMacOS Then
-		    Dim d As New MessageDialog
-		    Dim b As MessageDialogButton
-		    d.Icon = MessageDialog.GraphicQuestion
+		    Self.CheckTerminalAppRunning()
+		    
+		    Var d As New MessageDialog
+		    Var b As MessageDialogButton
+		    d.IconType = MessageDialog.IconTypes.Question
 		    d.ActionButton.Caption = "Determine Permission"
 		    d.CancelButton.Visible = True
 		    d.Title = "Example"
@@ -868,18 +877,16 @@ End
 		    
 		    #If DebugBuild Then
 		      d.Explanation = d.Explanation + EndOfLine + EndOfLine + _
-		      "Note: This is a DebugRun. It seems that each DebugRun (if the Debug.app is not codesigned) is considered a 'new application' by macOS. CodeSign the DebugBuild or Build the app to see how things behave across multiple launches of the app."
+		      "Note: This is a DebugRun. It seems that each DebugRun (especially if the Debug.app is not codesigned) is considered a 'new application' by macOS. Build the app to see how things behave across multiple launches of the app."
 		    #EndIf
 		    
-		    b = d.ShowModalWithin(Self)
+		    b = d.ShowModal(Self)
 		    Select Case b
 		    Case d.ActionButton
-		      Dim iRes As Int32 = macOS_AEDeterminePermissionToAutomateTarget("com.apple.Terminal")
+		      Var iRes As Int32 = macOS_AEDeterminePermissionToAutomateTarget(constBundleIdentifier_Terminal)
 		      
-		      Dim sResult As String = "Result: "
-		      Dim sExplanation As String
-		      
-		      Dim bShowSystemPreferences As Boolean = False
+		      Var sResult As String = "Result: "
+		      Var sExplanation As String
 		      
 		      Select Case iRes
 		      Case CType(AEPermissionResult.procNotFound, Int32)
@@ -891,7 +898,6 @@ End
 		      Case CType(AEPermissionResult.errAEEventNotPermitted, Int32)
 		        sResult = sResult + "Not Permitted"
 		        sExplanation = "You should probably see that the Checkbox is not selected in System Preferences..."
-		        bShowSystemPreferences = True
 		      Case CType(AEPermissionResult.noErr, Int32)
 		        sResult = sResult + "noErr"
 		        sExplanation = "So you should be able to automate Terminal.app"
@@ -902,24 +908,13 @@ End
 		      
 		      
 		      d = New MessageDialog
-		      d.Icon = MessageDialog.GraphicNote
+		      d.IconType = MessageDialog.IconTypes.Note
+		      d.ActionButton.Caption = "OK"
+		      d.CancelButton.Visible = False
 		      d.Title = "AEDeterminePermissionToAutomateTarget"
 		      d.Message = sResult
 		      d.Explanation = sExplanation
-		      d.ActionButton.Caption = "OK"
-		      d.CancelButton.Visible = False
-		      
-		      If bShowSystemPreferences Then
-		        d.ActionButton.Caption = "System Preferences"
-		        d.CancelButton.Visible = True
-		        If d.ShowModalWithin(Self) = d.ActionButton Then
-		          Call macOS_SystemPreferences_PrivacyAutomation
-		        End If
-		      Else
-		        d.ActionButton.Caption = "OK"
-		        d.CancelButton.Visible = False
-		        Call d.ShowModalWithin(Self)
-		      End If
+		      Call d.ShowModal(Self)
 		      
 		    Else
 		      Return
@@ -929,20 +924,22 @@ End
 		  #Else
 		    MsgBox "This example is for macOS only..."
 		  #EndIf
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events cnvPayPal
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
-		  g.ForeColor = &cFFFFFF
-		  #If (XojoVersion >= 2018.03) Then
-		    If IsDarkMode Then g.ForeColor = &cD0D0D0
-		  #EndIf
-		  g.FillRect(0, 0, g.Width, g.Height)
-		  g.ForeColor = &c909090
-		  g.DrawRect(0, 0, g.Width, g.Height)
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
+		  g.DrawingColor = &cFFFFFF
+		  If Color.IsDarkMode Then g.DrawingColor = &cD0D0D0
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+		  g.DrawingColor = &c909090
+		  g.DrawRectangle(0, 0, g.Width, g.Height)
 		  g.DrawPicture(PayPal, 3, 2, 100, 26, 0, 0, PayPal.Width, PayPal.Height)
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -954,18 +951,24 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://paypal.me/jotools")
+		    System.GotoURL("https://paypal.me/jotools")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 #tag EndEvents
@@ -982,88 +985,60 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
 		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("mailto:xojo@jo-tools.ch")
+		    System.GotoURL("mailto:xojo@jo-tools.ch")
 		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
-		Name="Name"
-		Visible=true
-		Group="ID"
-		Type="String"
-		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Interfaces"
-		Visible=true
-		Group="ID"
-		Type="String"
-		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Super"
-		Visible=true
-		Group="ID"
-		Type="String"
-		EditorType="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Width"
-		Visible=true
-		Group="Size"
-		InitialValue="600"
-		Type="Integer"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Height"
-		Visible=true
-		Group="Size"
-		InitialValue="400"
-		Type="Integer"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="MinWidth"
+		Name="MinimumWidth"
 		Visible=true
 		Group="Size"
 		InitialValue="64"
 		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="MinHeight"
+		Name="MinimumHeight"
 		Visible=true
 		Group="Size"
 		InitialValue="64"
 		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="MaxWidth"
+		Name="MaximumWidth"
 		Visible=true
 		Group="Size"
 		InitialValue="32000"
 		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="MaxHeight"
+		Name="MaximumHeight"
 		Visible=true
 		Group="Size"
 		InitialValue="32000"
 		Type="Integer"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Frame"
+		Name="Type"
 		Visible=true
 		Group="Frame"
 		InitialValue="0"
-		Type="Integer"
+		Type="Types"
 		EditorType="Enum"
 		#tag EnumValues
 			"0 - Document"
@@ -1080,78 +1055,43 @@ End
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Title"
-		Visible=true
-		Group="Frame"
-		InitialValue="Untitled"
-		Type="String"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="CloseButton"
+		Name="HasCloseButton"
 		Visible=true
 		Group="Frame"
 		InitialValue="True"
 		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Resizeable"
+		Name="HasMaximizeButton"
 		Visible=true
 		Group="Frame"
 		InitialValue="True"
 		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="MaximizeButton"
+		Name="HasMinimizeButton"
 		Visible=true
 		Group="Frame"
 		InitialValue="True"
 		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="MinimizeButton"
-		Visible=true
-		Group="Frame"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="FullScreenButton"
+		Name="HasFullScreenButton"
 		Visible=true
 		Group="Frame"
 		InitialValue="False"
 		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="Composite"
-		Group="OS X (Carbon)"
-		InitialValue="False"
-		Type="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="MacProcID"
-		Group="OS X (Carbon)"
-		InitialValue="0"
-		Type="Integer"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="ImplicitInstance"
-		Visible=true
-		Group="Behavior"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="Placement"
+		Name="DefaultLocation"
 		Visible=true
 		Group="Behavior"
 		InitialValue="0"
-		Type="Integer"
+		Type="Locations"
 		EditorType="Enum"
 		#tag EnumValues
 			"0 - Default"
@@ -1162,61 +1102,139 @@ End
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
+		Name="HasBackgroundColor"
+		Visible=true
+		Group="Background"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=true
+		Group="Background"
+		InitialValue="&hFFFFFF"
+		Type="Color"
+		EditorType="Color"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Name"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Interfaces"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Super"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Width"
+		Visible=true
+		Group="Size"
+		InitialValue="600"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Height"
+		Visible=true
+		Group="Size"
+		InitialValue="400"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Title"
+		Visible=true
+		Group="Frame"
+		InitialValue="Untitled"
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Resizeable"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Composite"
+		Visible=false
+		Group="OS X (Carbon)"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MacProcID"
+		Visible=false
+		Group="OS X (Carbon)"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="ImplicitInstance"
+		Visible=true
+		Group="Behavior"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
 		Name="Visible"
 		Visible=true
 		Group="Behavior"
 		InitialValue="True"
 		Type="Boolean"
-		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="LiveResize"
-		Visible=true
-		Group="Behavior"
-		InitialValue="True"
-		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="FullScreen"
+		Visible=false
 		Group="Behavior"
 		InitialValue="False"
 		Type="Boolean"
-		EditorType="Boolean"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="MenuBarVisible"
+		Visible=false
 		Group="Behavior"
 		InitialValue="True"
 		Type="Boolean"
-		EditorType="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="HasBackColor"
-		Visible=true
-		Group="Background"
-		InitialValue="False"
-		Type="Boolean"
-	#tag EndViewProperty
-	#tag ViewProperty
-		Name="BackColor"
-		Visible=true
-		Group="Background"
-		InitialValue="&hFFFFFF"
-		Type="Color"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
 		Visible=true
 		Group="Background"
+		InitialValue=""
 		Type="Picture"
-		EditorType="Picture"
+		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="MenuBar"
 		Visible=true
 		Group="Menus"
+		InitialValue=""
 		Type="MenuBar"
-		EditorType="MenuBar"
+		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior
