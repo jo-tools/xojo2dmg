@@ -142,7 +142,7 @@ Inherits XojoScript
 		  XojoScript.Errors.GlobalItemInClass: "Class members cannot be global.", _
 		  XojoScript.Errors.ProtectedItemInModule: "Module members must be public or private; they cannot be protected.", _
 		  XojoScript.Errors.GlobalItemInInnerModule: "Members of inner modules cannot be global.", _
-		  XojoScript.Errors.DimMultipleUsingNewObjectShortcut: "A Dim statement creates only one new object at a time.", _
+		  XojoScript.Errors.DimMultipleUsingNewObjectShortcut: "A Var statement creates only one new object at a time.", _
 		  XojoScript.Errors.ConstValueExpected: "A constant was expected here, but this is some other kind of expression.", _
 		  XojoScript.Errors.AccessPrivateModule: "This module is private, and can only be used within its containing module.", _
 		  XojoScript.Errors.DuplicatePropertyDeclaration: "Duplicate property definition.", _
@@ -206,9 +206,9 @@ Inherits XojoScript
 		  // After the script runs, the evaluated expression result is stored in mResult and
 		  // this is returned to the caller.
 		  
-		  Dim source As String
+		  Var source As String
 		  
-		  source = "Dim expr As Variant = " + expression + EndOfLine + _
+		  source = "Var expr As Variant = " + expression + EndOfLine + _
 		  "If expr.IsNumeric Then " + EndOfLine + _
 		  "mResult = Str(expr.DoubleValue)" + EndOfLine + _
 		  "Else " + EndOfLine + _

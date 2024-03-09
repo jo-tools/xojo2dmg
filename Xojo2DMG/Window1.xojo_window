@@ -708,10 +708,10 @@ End
 #tag Events btnXojoScriptEval
 	#tag Event
 		Sub Pressed()
-		  Dim oXojoScriptEvaluator As New XojoScriptEvaluator
-		  Dim sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
+		  Var oXojoScriptEvaluator As New XojoScriptEvaluator
+		  Var sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
 		  
-		  Dim d As New MessageDialog
+		  Var d As New MessageDialog
 		  d.IconType = MessageDialog.IconTypes.Question
 		  d.ActionButton.Caption = "OK"
 		  d.CancelButton.Visible = False
