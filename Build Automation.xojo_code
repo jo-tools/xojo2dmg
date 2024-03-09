@@ -13,15 +13,15 @@
 					'**************************************************
 					'Xojo2DMG - How to use with your Xojo-built .app?
 					'**************************************************
-					'1. copy the folder 'scripts' to your project folder.
-					'2. create a PostBuild Script, place it after the
-					'   build step and copy-and-paste this one.
+					'1. Copy the folder 'scripts' to your project folder.
+					'2. Create a PostBuild Script, place it after the
+					'   'Build' step and copy-and-paste the contents of this one.
 					'3. If you're using Xojo 2022r1 (or newer): make sure
 					'   this PostBuild Script runs after the Step 'Sign'.
 					'   Otherwise Xojo will overwrite the CodeSigning
 					'   again with it's 'Sign' step.
 					'4. Read the Comments in the PostBuild Script,
-					'   modify according to your needs (DMG Look&Feel,
+					'   modify it according to your needs (DMG Look&Feel,
 					'   CodeSign Entitlements, Notarization).
 					'**************************************************
 					
@@ -31,7 +31,8 @@
 					'1. Read the comments in this PostBuild Script
 					'2. Edit the values according to your needs
 					'**************************************************
-					'3. If it's working for you: Do you like it? Does it help you? Has it saved you time and money?
+					'3. If it's working for you:
+					'   Do you like it? Does it help you? Has it saved you time and money?
 					'   You're welcome - it's free...
 					'   If you want to say thanks I appreciate a message or a small donation.
 					'   Contact: xojo@jo-tools.ch
@@ -40,7 +41,7 @@
 					
 					
 					'The following Variables are just for convenience:
-					Var sApp_Version As String = PropertyValue("App.ShortVersion")
+					Var sApp_Version As String = PropertyValue("App.Version")
 					If (sApp_Version = "") Then
 					sApp_Version = PropertyValue("App.MajorVersion") + "." + PropertyValue("App.MinorVersion") + "." + PropertyValue("App.BugVersion")
 					End If
@@ -54,44 +55,44 @@
 					sApp_StageCode = "Beta"
 					End Select
 					
-					'Detect if build is called in a GitHub Actions Workflow
+					'Detect if this Build is called in a GitHub Actions Workflow
 					Var bIsGitHubActions As Boolean = EnvironmentVariable("GITHUB_WORKSPACE") <> "" And EnvironmentVariable("FOLDER_BUILDS") <> "" And EnvironmentVariable("FOLDER_BUILDS_MACOS_UNIVERSAL") <> "" And EnvironmentVariable("BUILD_MACOS_UNIVERSAL_POSTBUILD_SHELLSCRIPT") <> ""
 					
 					'If you want to use a folder other than '/scripts', then change this variable
 					Var sFolderScripts As String = "/scripts"
 					Var sFolderScriptsResources As String = sFolderScripts + "/resources"
 					
-					'if you want to see what's going on in Terminal.app, then set bOpenInTerminal to true
-					'this might be a more helpful output when something goes wrong
+					'If you want to see what's going on in Terminal.app, then set bOpenInTerminal to true.
+					'This might be a more helpful output when something goes wrong.
 					'Notarization might take a long while... so you don't want the IDE to seem
 					'not be responding in the post build step (it will show a Spinning Wheel during
 					'execution of a synchronous ShellScript, opening in Terminal will do this
-					'synchronously)
+					'asychronously outside of the Xojo IDE).
 					Var bOpenInTerminal As Boolean = True
 					
 					
 					'*********************************************************
 					'DebugBuilds: do you want to CodeSign the DebugRun's, too?
 					'*********************************************************
-					'a good idea, since the application's behavior with HardenedRuntime
-					'will be different...
+					'This is a good idea, since the application's behavior with
+					'HardenedRuntime will be different...
 					'Note: You will need to add your DeveloperID below to activate CodeSigning
 					Var bDebugBuild_DoCodeSign As Boolean = True
 					
 					If bDebugBuild_DoCodeSign And DebugBuild Then
-					'just Codesigning (without DMG Creation and Notarization) is
+					'Just Codesigning (without DMG Creation and Notarization) is
 					'fine in a 'hidden way', since it doesn't take too long
 					bOpenInTerminal = False
-					'this will be enforced below... you don't want the IDE to be launching
+					'This will be enforced below... you don't want the IDE to be launching
 					'the app while it is still being codesigned (asynchronous in Terminal)
 					End If
 					
 					'*******************************
-					'required: Xojo Project Settings
+					'Required: Xojo Project Settings
 					'*******************************
 					Var sPROJECT_PATH As String = DoShellCommand("echo $PROJECT_PATH", 0).Trim
 					If sPROJECT_PATH.Right(1) = "/" Then
-					'no trailing /
+					'No trailing /
 					sPROJECT_PATH = sPROJECT_PATH.Middle(1, sPROJECT_PATH.Length-1)
 					End If
 					Var sBUILD_LOCATION As String = CurrentBuildLocation.ReplaceAll("\", "") 'don't escape Path
@@ -103,10 +104,9 @@
 					If bDebugBuild_DoCodeSign Then sDEBUGBUILD_CODESIGN = "yes"
 					
 					'************************************
-					'required: DMG settings/customization
+					'Required: DMG settings/customization
 					'************************************
 					Var sDMG_VOLUME_FILENAME As String = sBUILD_APPNAME + " " + sApp_StageCode
-					sDMG_VOLUME_FILENAME = sDMG_VOLUME_FILENAME.Trim
 					Var sDMG_VOLUME_TITLE As String = sBUILD_APPNAME + " " + sApp_Version
 					Var sDMG_VOLUME_ICON As String = sPROJECT_PATH + sFolderScriptsResources + "/volumeicon.icns"
 					'Please note: the Images have to be 72DPI!
@@ -114,9 +114,9 @@
 					Var sDMG_BACKGROUND_IMG_2x As String = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_2x.png" 'Retina
 					Select Case PropertyValue("App.StageCode")
 					Case "3" 'Final
-					'use the BackgroundImage set just above
+					'Use the BackgroundImage set just above
 					Else
-					'not a final build - you might want to use a different BackgroundImage that has a 'PreRelease label'
+					'Not a final build - you might want to use a different BackgroundImage that has a 'PreRelease label'
 					'sDMG_BACKGROUND_IMG_1x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_1x.png" 'Non-Retina
 					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_2x.png" 'Retina
 					End Select
@@ -140,14 +140,15 @@
 					'To enable CodeSign with Xojo2DMG:
 					'fill in sCODESIGN_IDENT below... Otherwise, no CodeSigning will be performed
 					'
-					'Open "Keychain Access" and look at your certificates
-					'find your DeveloperID certicate's name, e.g.: Developer ID Application: YOUR NAME (ABCDEF)
-					'use the part that's before the brackets, e.g.:
+					'Open "Keychain Access" and look at your certificates.
+					'Find your DeveloperID certicate's name, e.g.: Developer ID Application: YOUR NAME (ABCDEF).
+					'Use the part that's before the brackets, e.g.:
 					'
 					'Var sCODESIGN_IDENT As String = "Developer ID Application: YOUR NAME"
 					Var sCODESIGN_IDENT As String = ""
 					
 					If bIsGitHubActions Then
+					'In GitHub Actions we're going to configure this outside in Workflows
 					Var sEnvCodesignIdent As String = EnvironmentVariable("CODESIGN_IDENT")
 					If (sEnvCodesignIdent <> "") Then sCODESIGN_IDENT = sEnvCodesignIdent
 					End If
@@ -155,12 +156,12 @@
 					'*********************
 					'CodeSign Entitlements
 					'*********************
-					'edit entitlements.plist in scripts/resources (e.g. for XojoScript or AppleEvents/Automation)
+					'Edit entitlements.plist in scripts/resources (e.g. for XojoScript or AppleEvents/Automation)
 					' - Automation requires true for: com.apple.security.automation.apple-events
 					' - XojoScript requires true for: com.apple.security.cs.allow-jit, com.apple.security.cs.allow-unsigned-executable-memory
-					' - sideloading .dylibs (e.g. via Plugins) might need: com.apple.security.cs.allow-dyld-environment-variables
-					' - Xojo2DMG is force codesigning Xojo Plugin's .dylibs
-					'   that's why this one is not needed. you might need it if you add additional .dylibs
+					' - Side-Loading .dylibs (e.g. via Plugins) might need: com.apple.security.cs.allow-dyld-environment-variables
+					' - Xojo2DMG will be force codesigning Xojo Plugin's .dylibs
+					'   That's why this one is not needed. You might need it if you add additional .dylibs
 					'   com.apple.security.cs.disable-library-validation
 					'
 					'Read more about the Hardened Runtime Entitlements here:
@@ -225,15 +226,12 @@
 					
 					Var sNOTARIZE As String = "no"
 					
-					'set this Boolean to true if you want to send the built .dmg to Apple for Notarization
-					'you might want to notarize both Beta and Final Builds, but no
-					'Alphas and Development Builds. If you're going to distribute Beta builds,
-					'then it's recommended to Notarize them, too.
-					'Note: Notarization will only be performed in release builds, and not in DebugBuilds
-					'      so a DebugRun will never get Notarized
-					'Note: macOS 10.14.5 and later will fail to validate a non-notarized .dmg
-					'      that expected error will be ignored. It's highly recommended to
-					'      notarize every build.
+					'Set this Boolean to true if you want to send the built .dmg to Apple for Notarization
+					'You might want to notarize both Beta and Final Builds, but no Alphas and Development Builds.
+					'If you're going to distribute Beta builds, then it's highly recommended to Notarize them, too.
+					'
+					'Note: Notarization will only be performed in release builds, never in DebugBuilds.
+					'      So a DebugRun will never get Notarized.
 					Select Case PropertyValue("App.StageCode")
 					Case "0" 'Development
 					sNOTARIZE = "no"
@@ -257,7 +255,7 @@
 					Return
 					End If
 					
-					'Check: Unsupported XojoVersion when building Universal (Intel 64Bit, ARM 64Bit)
+					'Sanity Check: Unsupported XojoVersion when building Universal (Intel 64Bit, ARM 64Bit)
 					If ((CurrentBuildTarget = 24) And (sBUILD_LOCATION.Right(18) = "/_macOS ARM 64 bit")) _
 					Or _
 					((CurrentBuildTarget = 16) And (sBUILD_LOCATION.Right(14) = "/_macOS 64 bit")) Then
@@ -339,7 +337,9 @@
 					' ******************
 					' * GitHub Actions *
 					' ******************
-					sShellArguments(5) = sBUILD_APPNAME.Trim 'sDMG_VOLUME_FILENAME without Stage Code in Filename
+					'sDMG_VOLUME_FILENAME without Stage Code in Filename
+					sDMG_VOLUME_FILENAME = sBUILD_APPNAME
+					sShellArguments(5) = sDMG_VOLUME_FILENAME.Trim 
 					
 					'Write a Shell Script for Xojo2DMG, which will be executed later by a Workflow Job
 					Var sGithubActionScript As String = EnvironmentVariable("GITHUB_WORKSPACE") + "/" + EnvironmentVariable("FOLDER_BUILDS")+ "/" + EnvironmentVariable("FOLDER_BUILDS_MACOS_UNIVERSAL") + "/" + EnvironmentVariable("BUILD_MACOS_UNIVERSAL_POSTBUILD_SHELLSCRIPT")
@@ -356,7 +356,7 @@
 					' ***************************
 					' * GitHub Actions end here *
 					' ***************************
-					' Shell Script will be called in a workflow step
+					' Shell Script will be called in a Workflow step
 					Return
 					End If
 					
@@ -368,17 +368,15 @@
 					Return 'see progress and errors in Terminal.app
 					End If
 					
-					'Let's call the ShellScript (and Pass ShellArguments to the Script)
+					'Let's call the ShellScript (and pass ShellArguments to the Script).
 					'This will be executed synchronously - the IDE will be 'busy'
-					'and showing a Spinning Wheel if this is taking a long time
-					Var sShellResult As String
+					'and showing a Spinning Wheel if this is taking a long time...
 					Var iShellResult As Integer
-					sShellResult = DoShellCommand("""" + sPROJECT_PATH + sFolderScripts + "/xojo2dmg.sh"" """ + String.FromArray(sShellArguments, """ """) + """", 0, iShellResult)
+					Var sShellResult As String = DoShellCommand("""" + sPROJECT_PATH + sFolderScripts + "/xojo2dmg.sh"" """ + String.FromArray(sShellArguments, """ """) + """", 0, iShellResult)
 					
-					'Process and Parse the output of the ShellScript
+					'Process and Parse the Output of the ShellScript
 					Var sXojo2CodeSignErrors() As String
-					Var sShellResultLines() As String
-					sShellResultLines = sShellResult.ReplaceAll(EndOfLine, "*****").Split("*****")
+					Var sShellResultLines() As String = sShellResult.ReplaceAll(EndOfLine, "*****").Split("*****")
 					For i As Integer = 0 To sShellResultLines.LastIndex
 					'get all lines with Xojo2DMG Errors (and not the full output)
 					If (sShellResultLines(i).Left(15) = "Xojo2DMG ERROR:") Then
@@ -389,7 +387,7 @@
 					Select Case iShellResult
 					Case 2
 					'DebugRun without Codesigning: xojo2dmg.sh will return with 'exit 2'
-					'don't put Result in Clipboard, don't show errors - it's all OK
+					'Don't put Result in Clipboard, don't show errors - it's all OK
 					Return
 					Case 8
 					'xojo2dmg.sh will 'exit 8' if variables aren't ok
@@ -412,7 +410,7 @@
 					
 					'If there are errors:
 					If (sXojo2CodeSignErrors.LastIndex >= 0) Then
-					'print just the Errors, and have the full output in Clipboard
+					'Print just the Errors, and have the full output in Clipboard
 					Print String.FromArray(sXojo2CodeSignErrors, EndOfLine) + EndOfLine + _
 					"Note: Shell Output is in Clipboard"
 					Clipboard = sShellResult
