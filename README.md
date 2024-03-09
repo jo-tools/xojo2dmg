@@ -1,5 +1,5 @@
 # Xojo2DMG
-Xojo2DMG: CodeSign, DMG creation and Notarization (Post Build Script)
+Xojo2DMG: CodeSign, DMG creation and Notarization *(Post Build Script)*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -9,19 +9,19 @@ A requirement for that is to CodeSign with Hardened Runtime. This might lead to 
 That's why I encourage everyone to CodeSign *(with Hardened Runtime)* each and every DebugRun on macOS, allowing you to develop and debug as close to a Release Build as possible.
 
 This example shows how a Post Build Script can be used in a Xojo project in order to create a customized DiskImage, sign and notarize both .app and .dmg.
-You can easily customize the DiskImage's appearance by setting a couple of Variables in the Post Build Script. Additionally, even Notarization can be performed fully scripted. That requires to set up an item in your Keychain - see Info in the Script provided.
+You can easily customize the DiskImage's appearance by setting a couple of Variables in the Post Build Script. Additionally, even Notarization can be performed fully scripted. That requires to set up an item in your Keychain - see Info in the Scripts provided.
 
 
 ### Requirements
 1. Xojo running on macOS *(obviously... you can't CodeSign for macOS on Windows)*
 2. CodeSigning, CodeSigning-Validation and Notarization requires Xcode to be installed
-5. Xojo2DMG requires
-   1. to be run on **macOS 11.3** *(or later)*
-   2. have **Xcode 13** *(or later)* installed
+3. Xojo2DMG requires
+   * to be run on **macOS 11.3** *(or later)*
+   * have **Xcode 13** *(or later)* installed
 
 
 ### ScreenShots
-[This DMG](example-build/Xojo2DMG.dmg) has been created with Xojo2DMG *(built with Xojo 2022r2, macOS 12.6, Xcode 14.0.1 for CodeSigning/Notarization)*. It contains the built example app *(built as macOS Universal: x86_64 & ARM64)*.
+[This DMG](example-build/Xojo2DMG.dmg) has been created with Xojo2DMG *(built with Xojo 2023r4, macOS 14.4, Xcode 15.3 for CodeSigning/Notarization)*. It contains the built example app *(built as macOS Universal: x86_64 & ARM64)*.
 ![ScreenShot: Disk Image](screenshots/xojo2dmg_screenshot_1.png?raw=true)
 
 Xojo IDE with the Post Build Script:  
@@ -31,16 +31,15 @@ Xojo IDE with the Post Build Script:
 ### Requirements
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
-The Desktop application Xojo example project ```Xojo2DMG.xojo_project``` is using:
-- Xojo 2018r4
-- API 1
+The Desktop application Xojo example project ```Xojo2DMG.xojo_project``` and its Post Build Script is using:
+- Xojo 2023r4
+- API 2
 
 ### How to use in your own Xojo project?
 1. Copy the folder ```scripts``` to your project folder.
-2. Create a PostBuild Script in your project and copy-and-paste the example PostBuild Script provided in Xojo2DMG.
-3. If you're using **Xojo 2022r1** *(or newer)*: make sure this PostBuild Script runs after the Step 'Sign'. Otherwise Xojo will overwrite the CodeSigning again with it's 'Sign' step.  
-   *Note: You even need to do this if you're opening this example project in Xojo 2022r1+. The reason is that Xojo 2018r4 *(which has been used to save this example project)* doesn't have Xojo's 'Sign' step - and all existing Post Build steps are being placed before 'Sign' by default.*
-4. Read the Comments in PostBuild Script, modify according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
+2. Create a PostBuild Script in your project and copy-and-paste the example PostBuild Script provided in ```Xojo2DMG.xojo_project```.
+3. If you're using **Xojo 2022r1** *(or newer)*: make sure this PostBuild Script runs after the Step 'Sign'. Otherwise Xojo will overwrite the CodeSigning again with it's 'Sign' step.
+4. Read the cComments in the provided Post Build Script, modify it according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
 
 ## About
 Juerg Otter is a long term user of Xojo and working for [CM Informatik AG](https://cmiag.ch/). Their Application [CMI LehrerOffice](https://cmi-bildung.ch/) is a Xojo Design Award Winner 2018. In his leisure time Juerg provides some [bits and pieces for Xojo Developers](https://www.jo-tools.ch/).
