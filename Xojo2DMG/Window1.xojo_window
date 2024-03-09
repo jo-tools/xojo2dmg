@@ -629,6 +629,7 @@ End
 		  #Pragma unused areas
 		  
 		  g.DrawPicture(AppIcon_128, 0, 0, 64, 64, 0, 0, AppIcon_128.Width, AppIcon_128.Height)
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -636,6 +637,7 @@ End
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -644,6 +646,7 @@ End
 		  #Pragma unused y
 		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -655,6 +658,7 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -664,6 +668,7 @@ End
 		  Me.Text = "Xojo2DMG"
 		  Me.FontSize = 18
 		  Me.Bold = True
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -671,6 +676,7 @@ End
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -679,6 +685,7 @@ End
 		  #Pragma unused y
 		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -690,6 +697,7 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -719,6 +727,7 @@ End
 		  d.Message = "XojoScript Evaluator Result"
 		  d.Explanation = sResult
 		  Call d.ShowModal(Self)
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -846,6 +855,7 @@ End
 		    MsgBox "This example is for macOS only..."
 		  #EndIf
 		  
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -914,6 +924,7 @@ End
 		  #Else
 		    MsgBox "This example is for macOS only..."
 		  #EndIf
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -928,6 +939,7 @@ End
 		  g.DrawingColor = &c909090
 		  g.DrawRectangle(0, 0, g.Width, g.Height)
 		  g.DrawPicture(PayPal, 3, 2, 100, 26, 0, 0, PayPal.Width, PayPal.Height)
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -939,6 +951,7 @@ End
 	#tag Event
 		Sub MouseEnter()
 		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -946,6 +959,7 @@ End
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
 		    System.GotoURL("https://paypal.me/jotools")
 		  End If
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -954,6 +968,7 @@ End
 		  #Pragma unused y
 		  
 		  Return True
+		  
 		End Function
 	#tag EndEvent
 #tag EndEvents

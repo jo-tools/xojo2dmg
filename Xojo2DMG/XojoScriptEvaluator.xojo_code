@@ -212,7 +212,7 @@ Inherits XojoScript
 		  "If expr.IsNumeric Then " + EndOfLine + _
 		  "mResult = Str(expr.DoubleValue)" + EndOfLine + _
 		  "Else " + EndOfLine + _
-		  "mResult = expr" +EndOfLine +  _
+		  "mResult = expr" + EndOfLine +  _
 		  "End If"
 		  
 		  Self.Source = source
@@ -227,8 +227,8 @@ Inherits XojoScript
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h1
-		Protected mResult As String
+	#tag Property, Flags = &h21
+		Private mResult As String
 	#tag EndProperty
 
 
