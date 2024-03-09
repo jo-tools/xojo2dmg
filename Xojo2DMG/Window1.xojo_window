@@ -634,7 +634,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
+		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
 		End Sub
 	#tag EndEvent
@@ -669,7 +669,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
+		    System.GotoURL("https://www.jo-tools.ch/xojo/xojo2dmg/")
 		  End If
 		End Sub
 	#tag EndEvent
@@ -712,7 +712,7 @@ End
 		  Dim sResult As String = oXojoScriptEvaluator.Eval(edtXojoScriptExpression.Text)
 		  
 		  Dim d As New MessageDialog
-		  d.Icon = MessageDialog.GraphicQuestion
+		  d.IconType = MessageDialog.IconTypes.Question
 		  d.ActionButton.Caption = "OK"
 		  d.CancelButton.Visible = False
 		  d.Title = "XojoScript Evaluator"
@@ -922,11 +922,11 @@ End
 		Sub Paint(g As Graphics, areas() As Rect)
 		  #Pragma unused areas
 		  
-		  g.ForeColor = &cFFFFFF
-		  If IsDarkMode Then g.ForeColor = &cD0D0D0
-		  g.FillRect(0, 0, g.Width, g.Height)
-		  g.ForeColor = &c909090
-		  g.DrawRect(0, 0, g.Width, g.Height)
+		  g.DrawingColor = &cFFFFFF
+		  If Color.IsDarkMode Then g.DrawingColor = &cD0D0D0
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+		  g.DrawingColor = &c909090
+		  g.DrawRectangle(0, 0, g.Width, g.Height)
 		  g.DrawPicture(PayPal, 3, 2, 100, 26, 0, 0, PayPal.Width, PayPal.Height)
 		End Sub
 	#tag EndEvent
@@ -944,7 +944,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("https://paypal.me/jotools")
+		    System.GotoURL("https://paypal.me/jotools")
 		  End If
 		End Sub
 	#tag EndEvent
@@ -980,7 +980,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    ShowURL("mailto:xojo@jo-tools.ch")
+		    System.GotoURL("mailto:xojo@jo-tools.ch")
 		  End If
 		End Sub
 	#tag EndEvent
