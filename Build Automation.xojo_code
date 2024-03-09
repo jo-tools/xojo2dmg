@@ -120,7 +120,7 @@
 					'sDMG_BACKGROUND_IMG_1x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_1x.png" 'Non-Retina
 					'sDMG_BACKGROUND_IMG_2x = sPROJECT_PATH + sFolderScriptsResources + "/backgroundImage_2x.png" 'Retina
 					End Select
-					Var sDMG_ALIAS_CAPTION As String = "copy 2 Applications" 'how to label the Alias to the Applications folder
+					Var sDMG_ALIAS_CAPTION As String = "Applications" 'how to label the Alias to the Applications folder
 					Var sDMG_WINDOW_BOUNDS As String = "200, 100, 845, 575" 'position the window, change according to your BackgroundPicture
 					Var sDMG_ICON_SIZE As String = "128"
 					Var sDMG_TEXT_SIZE As String = "16"
@@ -339,7 +339,7 @@
 					' ******************
 					'sDMG_VOLUME_FILENAME without Stage Code in Filename
 					sDMG_VOLUME_FILENAME = sBUILD_APPNAME
-					sShellArguments(5) = sDMG_VOLUME_FILENAME.Trim 
+					sShellArguments(5) = sDMG_VOLUME_FILENAME.Trim
 					
 					'Write a Shell Script for Xojo2DMG, which will be executed later by a Workflow Job
 					Var sGithubActionScript As String = EnvironmentVariable("GITHUB_WORKSPACE") + "/" + EnvironmentVariable("FOLDER_BUILDS")+ "/" + EnvironmentVariable("FOLDER_BUILDS_MACOS_UNIVERSAL") + "/" + EnvironmentVariable("BUILD_MACOS_UNIVERSAL_POSTBUILD_SHELLSCRIPT")
