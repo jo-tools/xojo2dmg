@@ -8,6 +8,7 @@
 				End
 				Begin SignProjectStep Sign
 				  DeveloperID=
+				  macOSEntitlements={"App Sandbox":"False","Hardened Runtime":"False","Notarize":"False","UserEntitlements":""}
 				End
 				Begin IDEScriptBuildStep Xojo2DMG , AppliesTo = 0, Architecture = 0, Target = 0
 					'**************************************************
@@ -93,7 +94,7 @@
 					Var sPROJECT_PATH As String = DoShellCommand("echo $PROJECT_PATH", 0).Trim
 					If sPROJECT_PATH.Right(1) = "/" Then
 					'No trailing /
-					sPROJECT_PATH = sPROJECT_PATH.Middle(1, sPROJECT_PATH.Length-1)
+					sPROJECT_PATH = sPROJECT_PATH.Left(sPROJECT_PATH.Length - 1)
 					End If
 					Var sBUILD_LOCATION As String = CurrentBuildLocation.ReplaceAll("\", "") 'don't escape Path
 					Var sBUILD_APPNAME As String = CurrentBuildAppName 'Xojo 2022r1 adds .app

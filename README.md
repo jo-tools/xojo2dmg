@@ -32,14 +32,14 @@ Xojo IDE with the Post Build Script:
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
 The Desktop application Xojo example project ```Xojo2DMG.xojo_project``` and its Post Build Script is using:
-- Xojo 2023r4
+- Xojo 2024r4.2
 - API 2
 
 ### How to use in your own Xojo project?
 1. Copy the folder ```scripts``` to your project folder.
 2. Create a PostBuild Script in your project and copy-and-paste the example PostBuild Script provided in ```Xojo2DMG.xojo_project```.
 3. If you're using **Xojo 2022r1** *(or newer)*: make sure this PostBuild Script runs after the Step 'Sign'. Otherwise Xojo will overwrite the CodeSigning again with it's 'Sign' step.
-4. Read the cComments in the provided Post Build Script, modify it according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
+4. Read the comments in the provided Post Build Script, modify it according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
 
 ## About
 Juerg Otter is a long term user of Xojo and working for [CM Informatik AG](https://cmiag.ch/). Their Application [CMI LehrerOffice](https://cmi-bildung.ch/) is a Xojo Design Award Winner 2018. In his leisure time Juerg provides some [bits and pieces for Xojo Developers](https://www.jo-tools.ch/).
