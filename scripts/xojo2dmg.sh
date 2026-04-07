@@ -381,13 +381,6 @@ if [ -n "${CODESIGN_IDENT}" ]; then
 		echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
 		exit 11
 	fi
-	if [ "${BUILD_TYPE}" = "release" ]; then
-		echo "Xojo2DMG: Entitlements: Disable com.apple.security.cs.debugger"
-		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/true/false/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
-	else
-		echo "Xojo2DMG: Entitlements: Enable com.apple.security.cs.debugger"
-		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/false/true/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
-	fi
 
 	# Sign the app
 	echo ""

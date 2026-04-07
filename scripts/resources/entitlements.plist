@@ -12,8 +12,6 @@
 	<false/>
 	<key>com.apple.security.cs.disable-executable-page-protection</key>
 	<false/>
-	<key>com.apple.security.cs.debugger</key>
-	<false/>
 	<key>com.apple.security.personal-information.audio-input</key>
 	<false/>
 	<key>com.apple.security.personal-information.camera</key>
