@@ -38,7 +38,7 @@ The Desktop application Xojo example project ```Xojo2DMG.xojo_project``` and its
 ### How to use in your own Xojo project?
 1. Copy the folder ```scripts``` to your project folder.
 2. Create a PostBuild Script in your project and copy-and-paste the example PostBuild Script provided in ```Xojo2DMG.xojo_project```.
-3. If you're using **Xojo 2022r1** *(or newer)*: make sure this PostBuild Script runs after the Step 'Sign'. Otherwise Xojo will overwrite the CodeSigning again with it's 'Sign' step.
+3. On **Xojo 2022r1** *(and later)*, place this PostBuild Script after the built-in 'Sign' step — otherwise that step will overwrite the CodeSigning done here.
 4. Read the comments in the provided Post Build Script, modify it according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
 
 ## About
