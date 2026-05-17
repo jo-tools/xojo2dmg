@@ -467,7 +467,7 @@ echo "Xojo2DMG: waiting for App to finish copying to staging directory..."
 echo ""
 echo "Xojo2DMG: figure out how big the .dmg needs to be"
 IFS=$OLDIFS
-DMG_SIZE=(`du -m $temp | tail -1`)
+DMG_SIZE=(`du -m -s "${STAGING_DIR}" | tail -1`)
 DMG_SIZE=$(( $DMG_SIZE + 50 ))
 echo "Xojo2DMG: size required for temporary DMG: ${DMG_SIZE}M"
 
