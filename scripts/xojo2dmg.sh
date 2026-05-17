@@ -137,59 +137,10 @@ echo "Xojo2DMG: setting up a couple of things..."
 
 OLDIFS=$IFS
 
-# helper to check version of OS
-vercomp () {
-    if [[ $1 == $2 ]]
-    then
-        return 0
-    fi
-    local IFS=.
-    local i ver1=($1) ver2=($2)
-    # fill empty fields in ver1 with zeros
-    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
-    do
-        ver1[i]=0
-    done
-    for ((i=0; i<${#ver1[@]}; i++))
-    do
-        if [[ -z ${ver2[i]} ]]
-        then
-            # fill empty fields in ver2 with zeros
-            ver2[i]=0
-        fi
-        if ((10#${ver1[i]} > 10#${ver2[i]}))
-        then
-            return 1
-        fi
-        if ((10#${ver1[i]} < 10#${ver2[i]}))
-        then
-            return 2
-        fi
-    done
-    return 0
-}
-
-# get OS Version
-echo "Xojo2DMG: checking OS Version"
-OS_VERSION=$(sw_vers -productVersion)
-
-vercomp ${OS_VERSION} 10.12.0
-case $? in
-		0) OS_PRODUCTNAME='macOS';;
-		1) OS_PRODUCTNAME='macOS';;
-		2) OS_PRODUCTNAME='OS X';;
-esac
-echo "Xojo2DMG: ${OS_PRODUCTNAME} ${OS_VERSION}"
-
 # Xojo2DMG requires macOS 11.3.0
-vercomp ${OS_VERSION} 11.3.0
-case $? in
-	0) op='=';;
-	1) op='>';;
-	2) op='<';;
-esac
-if [[ $op = '<' ]]
-then
+OS_VERSION=$(sw_vers -productVersion)
+echo "Xojo2DMG: macOS ${OS_VERSION}"
+if [ "$(printf '%s\n11.3.0\n' "${OS_VERSION}" | sort -V | head -n1)" != "11.3.0" ]; then
 	echo ""
 	echo "Xojo2DMG ERROR: Minimum OS requirement to run xojo2dmg.sh is macOS 11.3."
 	exit 5
@@ -293,13 +244,9 @@ sync
 # Cleanup and CodeSign
 # ********************
 
-# strip out unnecessary archs (i386 | x86_64 | arm64) in Frameworks
-STRIP_I386_FRAMEWORKS=1
+# strip out unnecessary archs (x86_64 | arm64) in Frameworks
 STRIP_X86_64_FRAMEWORKS=1
 STRIP_ARM64_FRAMEWORKS=1
-if [[ "${APP_ARCHS}" =~ "i386" ]]; then
-	STRIP_I386_FRAMEWORKS=0
-fi
 if [[ "${APP_ARCHS}" =~ "x86_64" ]]; then
 	STRIP_X86_64_FRAMEWORKS=0
 fi
@@ -309,12 +256,11 @@ fi
 
 if [ -z "${CODESIGN_IDENT}" ]; then
 	#without CodeSigning we also don't strip Frameworks
-	STRIP_I386_FRAMEWORKS=0
 	STRIP_X86_64_FRAMEWORKS=0
 	STRIP_ARM64_FRAMEWORKS=0
 fi
 
-if [ $STRIP_I386_FRAMEWORKS -eq 1 ] || [ $STRIP_X86_64_FRAMEWORKS -eq 1 ] || [ $STRIP_ARM64_FRAMEWORKS -eq 1 ]; then
+if [ $STRIP_X86_64_FRAMEWORKS -eq 1 ] || [ $STRIP_ARM64_FRAMEWORKS -eq 1 ]; then
 	echo "Xojo2DMG: Find and Cleanup Frameworks according to build archs: ${APP_ARCHS}"
 	sleep 1
 
@@ -331,11 +277,6 @@ if [ $STRIP_I386_FRAMEWORKS -eq 1 ] || [ $STRIP_X86_64_FRAMEWORKS -eq 1 ] || [ $
 			if [ -d "${currentframeworkFolder}/Versions/A" ]; then
 				echo "Xojo2DMG: Checking Framework: ${currentFrameworkName}"
 				cd "${currentframeworkFolder}/Versions/A"
-				if [ $STRIP_I386_FRAMEWORKS -eq 1 ]; then
-					lipo -archs "./${currentFrameworkName}" | grep "i386" && lipo "./${currentFrameworkName}" -remove i386 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
-					sync
-					sleep 1
-				fi
 				if [ $STRIP_X86_64_FRAMEWORKS -eq 1 ]; then
 					lipo -archs "./${currentFrameworkName}" | grep "x86_64" && lipo "./${currentFrameworkName}" -remove x86_64 -output "./${currentFrameworkName}" && echo " -> " && lipo -archs "./${currentFrameworkName}"
 					sync
@@ -380,13 +321,6 @@ if [ -n "${CODESIGN_IDENT}" ]; then
 	if [ ! -f "${CODESIGN_ENTITLEMENTS_APPLY}" ]; then
 		echo "Xojo2DMG ERROR: \$CODESIGN_ENTITLEMENTS plist file not found."
 		exit 11
-	fi
-	if [ "${BUILD_TYPE}" = "release" ]; then
-		echo "Xojo2DMG: Entitlements: Disable com.apple.security.cs.debugger"
-		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/true/false/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
-	else
-		echo "Xojo2DMG: Entitlements: Enable com.apple.security.cs.debugger"
-		sed -i '' '/<key>com.apple.security.cs.debugger</{n;s/false/true/;}' "${CODESIGN_ENTITLEMENTS_APPLY}"
 	fi
 
 	# Sign the app
@@ -474,7 +408,7 @@ echo "Xojo2DMG: waiting for App to finish copying to staging directory..."
 echo ""
 echo "Xojo2DMG: figure out how big the .dmg needs to be"
 IFS=$OLDIFS
-DMG_SIZE=(`du -m $temp | tail -1`)
+DMG_SIZE=(`du -m -s "${STAGING_DIR}" | tail -1`)
 DMG_SIZE=$(( $DMG_SIZE + 50 ))
 echo "Xojo2DMG: size required for temporary DMG: ${DMG_SIZE}M"
 

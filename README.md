@@ -21,7 +21,7 @@ You can easily customize the DiskImage's appearance by setting a couple of Varia
 
 
 ### ScreenShots
-[This DMG](example-build/Xojo2DMG.dmg) has been created with Xojo2DMG *(built with Xojo 2023r4, macOS 14.4, Xcode 15.3 for CodeSigning/Notarization)*. It contains the built example app *(built as macOS Universal: x86_64 & ARM64)*.
+[This DMG](example-build/Xojo2DMG.dmg) has been created with Xojo2DMG *(built with Xojo 2026r1.2, macOS 26.5, Xcode 26.5 for CodeSigning/Notarization)*. It contains the built example app *(built as macOS Universal: x86_64 & ARM64)*.
 ![ScreenShot: Disk Image](screenshots/xojo2dmg_screenshot_1.png?raw=true)
 
 Xojo IDE with the Post Build Script:  
@@ -32,13 +32,13 @@ Xojo IDE with the Post Build Script:
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
 The Desktop application Xojo example project ```Xojo2DMG.xojo_project``` and its Post Build Script is using:
-- Xojo 2024r4.2
+- Xojo 2026r1.2
 - API 2
 
 ### How to use in your own Xojo project?
 1. Copy the folder ```scripts``` to your project folder.
 2. Create a PostBuild Script in your project and copy-and-paste the example PostBuild Script provided in ```Xojo2DMG.xojo_project```.
-3. If you're using **Xojo 2022r1** *(or newer)*: make sure this PostBuild Script runs after the Step 'Sign'. Otherwise Xojo will overwrite the CodeSigning again with it's 'Sign' step.
+3. On **Xojo 2022r1** *(and later)*, place this PostBuild Script after the built-in 'Sign' step — otherwise that step will overwrite the CodeSigning done here.
 4. Read the comments in the provided Post Build Script, modify it according to your needs *(CodeSign Entitlements, Notarization, DMG look and feel)*.
 
 ## About
