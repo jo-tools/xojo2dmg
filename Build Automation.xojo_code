@@ -276,11 +276,6 @@
 					
 					'Check Xojo's Build Target
 					Select Case CurrentBuildTarget
-					Case 7
-					'macOS: Intel 32Bit
-					If (Not DebugBuild) Then
-					Print "Xojo2DMG: Putting a 32Bit application into a DMG is fine." + EndOfLine + EndOfLine + "If you intend to CodeSign and Notarize, you should build an Intel 64Bit or Universal (Intel 64Bit, ARM 64Bit) application."
-					End If
 					Case 16
 					'macOS: Intel 64Bit
 					Case 24
@@ -288,7 +283,7 @@
 					Case 9
 					'macOS: Universal (Intel 64Bit, ARM 64Bit)
 					Else
-					Print "Supported macOS Build Targets for Xojo2DMG are: Intel (32Bit / 64Bit), ARM (64Bit) and Universal (Intel 64Bit, ARM 64Bit)." + EndOfLine + EndOfLine + "CurrentBuildTarget: " + Str(CurrentBuildTarget)
+					Print "Supported macOS Build Targets for Xojo2DMG are: Intel 64Bit, ARM 64Bit and Universal (Intel 64Bit, ARM 64Bit)." + EndOfLine + EndOfLine + "CurrentBuildTarget: " + Str(CurrentBuildTarget)
 					Return
 					End Select
 					
